@@ -1,0 +1,27 @@
+todo:
+- remove unused assets. fonts, images, sounds etc.
+- menus still does not look like mockup. screen ratio seems wierd. 
+do not do the buttons with images. use native functionality to do images. never stretch things that do not need stretching. stretching makes fonts look wierd.
+- treplex logo is not there. add it.
+- text in options is missing antialias. looks like you have used an image to add text instead of using native text functions.
+- same as above on about. do not use images to generate text.
+- www.treplex.se in About should be link.
+- gradients on every background looks a little wierd. instead of being a gradient between blue and light blue I see horizontal lines in the sky.
+looks like the mockup has more colors avaible than the app.
+- add z-index to parallax backgrounds and entities. specify in xml with "zindex=#".
+- different speeds of parallax backgrounds. specify in xml.
+- make the gravity specification in xml work.
+- name specification in xml should work.
+- specify stretch ratio of parralax, backgrounds and entities. 
+i think this will be easier to understand compared to doing the calculations with world height and width automatically.
+- engine sound does not sound good. mx meyham sounds much better. try to make it sound more like a car.
+- the shape for the car seems to be a little incorrect. when i roll with the car the contact points do not look ok.
+- add the debug text like before. should be able to disable with just changing variable in code. debug text should include tilt variable and fps.
+- add icon(s)
+- remove loading time when restarting.
+- hitting menu key should pause the game and open the menu. 
+- do not pause the game when hitting middle of screen.
+- add options as button on pause. when the user pauses the game he should be able to access the options.
+- add best time to every level at level select.
+- goto level select when user finish a level.
+- add stopwatch. add time at top left corner. restart at level restart. behave like usual stopwatch.

@@ -1,0 +1,5 @@
+Copia sfx dentro de la carpeta de assets
+reemplaza levels
+cambia todos los sources.
+
+Revisa bien el texto pq ya estoy fundido y me preocupa que tenga pifias prueba el juego pq de veras que ya no genero mas.

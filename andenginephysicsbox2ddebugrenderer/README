@@ -1,0 +1,4 @@
+USAGE
+
+Attach the Box2dDebugRenderer to your Scene like this:
+this.mScene.attachChild(new Box2dDebugRenderer(mPhysicsWorld));

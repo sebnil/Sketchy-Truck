@@ -1,0 +1,31 @@
+10
+
+dir
+5
+http://andenginephysicsbox2ddebugrenderer.googlecode.com/svn/trunk/src/org/anddev/andengine/extension/physics/box2d
+http://andenginephysicsbox2ddebugrenderer.googlecode.com/svn
+
+
+
+2011-10-19T02:13:16.709486Z
+5
+skyuzo.j@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+effdcb53-68a1-1c30-c898-75f83ca61345
+
+util
+dir
+

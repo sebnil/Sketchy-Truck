@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- created with http://www.physicseditor.de -->
+<bodydef version="1.0">
+	<bodies>
+    
+		<body name="body" dynamic="true">
+            
+            <fixture
+                    density="2"
+                    friction="0"
+                    restitution="0"
+                    filter_categoryBits="2"
+                    filter_groupIndex="0"
+                    filter_maskBits="65535"
+                    isSensor="false"
+                    type="POLYGON"
+                    >
+
+                    
+                    <polygon>
+                        
+                        <vertex x="35.0000" y="-5.5000" />
+                        
+                        <vertex x="-36.0000" y="-25.5000" />
+                        
+                        <vertex x="14.0000" y="-25.5000" />
+                        
+                    </polygon>
+                    
+                    <polygon>
+                        
+                        <vertex x="66.5000" y="1.0000" />
+                        
+                        <vertex x="73.5000" y="23.0000" />
+                        
+                        <vertex x="35.0000" y="-5.5000" />
+                        
+                        <vertex x="62.0000" y="-5.5000" />
+                        
+                        <vertex x="64.0000" y="-4.5000" />
+                        
+                    </polygon>
+                    
+                    <polygon>
+                        
+                        <vertex x="73.5000" y="23.0000" />
+                        
+                        <vertex x="71.0000" y="24.5000" />
+                        
+                        <vertex x="-39.1350" y="-24.0000" />
+                        
+                        <vertex x="-36.0000" y="-25.5000" />
+                        
+                        <vertex x="35.0000" y="-5.5000" />
+                        
+                    </polygon>
+                    
+                    <polygon>
+                        
+                        <vertex x="-72.0000" y="-6.5000" />
+                        
+                        <vertex x="-47.5401" y="-6.5000" />
+                        
+                        <vertex x="71.0000" y="24.5000" />
+                        
+                        <vertex x="-73.0000" y="24.5000" />
+                        
+                        <vertex x="-75.5000" y="21.0000" />
+                        
+                        <vertex x="-75.5000" y="-4.0000" />
+                        
+                    </polygon>
+                    
+                    <polygon>
+                        
+                        <vertex x="-39.1350" y="-24.0000" />
+                        
+                        <vertex x="71.0000" y="24.5000" />
+                        
+                        <vertex x="-47.5401" y="-6.5000" />
+                        
+                    </polygon>
+                    
+
+            </fixture>
+            
+		</body>
+    
+		<body name="body_2" dynamic="true">
+            
+            <fixture
+                    density="2"
+                    friction="0"
+                    restitution="0"
+                    filter_categoryBits="2"
+                    filter_groupIndex="0"
+                    filter_maskBits="65535"
+                    isSensor="false"
+                    type="POLYGON"
+                    >
+
+                    
+                    <polygon>
+                        
+                        <vertex x="-72.5334" y="17.6002" />
+                        
+                        <vertex x="-4.3936" y="-24.7636" />
+                        
+                        <vertex x="75.0719" y="17.0658" />
+                        
+                    </polygon>
+                    
+
+            </fixture>
+            
+            <fixture
+                    density="2"
+                    friction="0"
+                    restitution="0"
+                    filter_categoryBits="2"
+                    filter_groupIndex="0"
+                    filter_maskBits="65535"
+                    isSensor="false"
+                    type="POLYGON"
+                    >
+
+                    
+                    <polygon>
+                        
+                        <vertex x="-72.4306" y="17.6002" />
+                        
+                        <vertex x="-41.0843" y="-19.8304" />
+                        
+                        <vertex x="-4.4758" y="-24.4553" />
+                        
+                    </polygon>
+                    
+
+            </fixture>
+            
+            <fixture
+                    density="2"
+                    friction="0"
+                    restitution="0"
+                    filter_categoryBits="2"
+                    filter_groupIndex="0"
+                    filter_maskBits="65535"
+                    isSensor="false"
+                    type="POLYGON"
+                    >
+
+                    
+                    <polygon>
+                        
+                        <vertex x="-72.7390" y="17.9085" />
+                        
+                        <vertex x="-72.9445" y="-5.5447" />
+                        
+                        <vertex x="-52.5745" y="-6.2641" />
+                        
+                    </polygon>
+                    
+
+            </fixture>
+            
+            <fixture
+                    density="2"
+                    friction="0"
+                    restitution="0"
+                    filter_categoryBits="2"
+                    filter_groupIndex="0"
+                    filter_maskBits="65535"
+                    isSensor="false"
+                    type="POLYGON"
+                    >
+
+                    
+                    <polygon>
+                        
+                        <vertex x="28.1860" y="-7.6824" />
+                        
+                        <vertex x="67.5488" y="-4.7225" />
+                        
+                        <vertex x="75.1747" y="17.1686" />
+                        
+                    </polygon>
+                    
+
+            </fixture>
+            
+            <fixture
+                    density="2"
+                    friction="0"
+                    restitution="0"
+                    filter_categoryBits="2"
+                    filter_groupIndex="0"
+                    filter_maskBits="65535"
+                    isSensor="false"
+                    type="POLYGON"
+                    >
+
+                    
+                    <polygon>
+                        
+                        <vertex x="-4.7020" y="-24.5375" />
+                        
+                        <vertex x="13.4892" y="-24.6608" />
+                        
+                        <vertex x="36.4286" y="-7.1891" />
+                        
+                    </polygon>
+                    
+
+            </fixture>
+            
+		</body>
+    
+	</bodies>
+	<metadata>
+		<format>1</format>
+		<ptm_ratio></ptm_ratio>
+	</metadata>
+</bodydef>
