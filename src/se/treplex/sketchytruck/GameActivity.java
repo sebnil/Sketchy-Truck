@@ -1,3 +1,8 @@
+/**
+ * @author Sebastian Nilsson
+ * project url: http://sebastiannilsson.com/projekt/sketchy-truck/behover-hjalp-2d-bilspel-i-android/
+ */
+
 package se.treplex.sketchytruck;
 
 import static org.anddev.andengine.extension.physics.box2d.util.constants.PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;

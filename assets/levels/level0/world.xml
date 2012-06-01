@@ -2,7 +2,7 @@
 <world width="4098" height="800" level-caption-image="caption.png" background-front="background.png" gravity="GRAVITY_VENUS" name="myFirst">
   <car x="38" y="245"/>
   <entities>    
-	<entity x="0" y="0" shape="mask" sprite="mask.png" visible="false"/>
+	<entity x="0" y="2" shape="mask" sprite="mask.png" visible="false"/>
   </entities>
   <deadareas length="2">
 	<deadarea x="0" y="750" height="100" width="2000"></deadarea>
