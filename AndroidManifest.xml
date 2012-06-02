@@ -3,15 +3,8 @@
           package="se.treplex.sketchytruck"
           android:versionCode="1"
           android:versionName="1.0">
-    <application android:label="@string/app_name">
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name="GameActivity"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name="PhysicsEditorExample"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
