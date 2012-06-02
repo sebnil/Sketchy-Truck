@@ -24,4 +24,5 @@
             android:normalScreens="true"
             android:smallScreens="true"
             android:anyDensity="true"/>
+    <uses-sdk android:minSdkVersion="2" />
 </manifest> 
