@@ -565,13 +565,15 @@ public class GameActivity extends BaseGameActivity implements
 						0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		Sprite tempSprite = new Sprite(10, 5, tempTextureRegion);
+        Sprite tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
+                .getWidth()), getCenter(CAMERA_HEIGHT, 4 * tempTextureRegion
+                        .getHeight() + 20), tempTextureRegion);
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.5f;
+        us.width = 0.5f;
 		us.height = 1/5f;
-		us.leftMargin = 0.04f;
-		us.topMargin = 0.04f;
+        us.leftMargin = 0.26f;
+        us.topMargin = 0.01f;
 		us.SetProperties();
 		
 		mainScreen.add(us.sprite);
@@ -612,7 +614,7 @@ public class GameActivity extends BaseGameActivity implements
 		tempTexture = new BitmapTextureAtlas(512, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(tempTexture, this, "gfx/newgamebutton.png", 0,
+                .createFromAsset(tempTexture, this, "gfx/newgamebutton.png", 0,
 						0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
@@ -630,12 +632,12 @@ public class GameActivity extends BaseGameActivity implements
 					return true;
 				}
 				return false;
-			}
-		};
+            }
+        };
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
@@ -667,8 +669,8 @@ public class GameActivity extends BaseGameActivity implements
 		
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
@@ -700,8 +702,8 @@ public class GameActivity extends BaseGameActivity implements
 		
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
@@ -731,8 +733,8 @@ public class GameActivity extends BaseGameActivity implements
 		
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
@@ -777,8 +779,8 @@ public class GameActivity extends BaseGameActivity implements
 		
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
@@ -810,8 +812,8 @@ public class GameActivity extends BaseGameActivity implements
 
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
@@ -845,8 +847,8 @@ public class GameActivity extends BaseGameActivity implements
 
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
 		
-		us.width = 0.41f;
-		us.height = 1/10f;
+        us.width = 0.41f;
+        us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
