@@ -60,6 +60,7 @@ import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.widget.CursorAdapter;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -110,6 +111,16 @@ public class GameActivity extends BaseGameActivity implements
 	public static final FixtureDef ONLY_WALL_FIXTURE_DEF = PhysicsFactory
 			.createFixtureDef(1, 0.2f, 1f, false, CATEGORYBIT_CIRCLE,
 					MASKBITS_ONLY_WALL, (short) -1);
+	
+
+	public static final int NOSCREEN = 0;
+	public static final int MAIN_SCREEN_ID = 1;
+	public static final int OPTION_SCREEN_ID = 2;
+	public static final int HELP_SCREEN_ID = 3;
+	public static final int ABOUT_SCREEN_ID = 4;
+	public static final int CHOOSELEVEL_SCREEN_ID = 5;
+	public static final int PAUSE_SCREEN_ID = 6;
+	
 
 	// ===========================================================
 	// Fields
@@ -130,6 +141,8 @@ public class GameActivity extends BaseGameActivity implements
 	private ArrayList<Sprite> optionScreen;
 	private ArrayList<Sprite> helpScreen;
 	private ArrayList<ArrayList<Sprite>> chooseLevelScreen;
+	//holds the current chosen screen
+	private int currentScreenID;
 	//Entities loaded in the level, use to release them from the scene when level finished
 	private ArrayList<IEntity> levelEntities;
 	private StackPanel sp;
@@ -309,7 +322,7 @@ public class GameActivity extends BaseGameActivity implements
 		mScene.setTouchAreaBindingEnabled(true);
 		//Load the main screen of the game
 		loadScreen(mainScreen);
-
+		currentScreenID = MAIN_SCREEN_ID;
 		return mScene;
 	}
 
@@ -373,7 +386,7 @@ public class GameActivity extends BaseGameActivity implements
 
 					//Loading pause Screen
 					loadScreen(pauseScreen);
-
+					currentScreenID = PAUSE_SCREEN_ID;
 					return true;
 
 				}
@@ -510,6 +523,7 @@ public class GameActivity extends BaseGameActivity implements
 					CloseLevel();
 					preUpdates = 0;
 					loadScreen(mainScreen);
+					currentScreenID = MAIN_SCREEN_ID;
 				}
 			isFinish = false;
 			
@@ -593,6 +607,7 @@ public class GameActivity extends BaseGameActivity implements
 				if (t.isActionDown()) {
 					unloadScreen(mainScreen);
 					loadScreen(aboutScreen);
+					currentScreenID = ABOUT_SCREEN_ID;
 					return true;
 				}
 				return false;
@@ -627,8 +642,10 @@ public class GameActivity extends BaseGameActivity implements
 				if (t.isActionDown()) {
 					unloadScreen(mainScreen);
 
-					if (chooseLevelScreen.size() > 0)
+					if (chooseLevelScreen.size() > 0)  {
 						loadScreen(chooseLevelScreen.get(0));
+						currentScreenID = CHOOSELEVEL_SCREEN_ID;
+					}
 					return true;
 				}
 				return false;
@@ -661,6 +678,7 @@ public class GameActivity extends BaseGameActivity implements
 				if (t.isActionDown()) {
 					unloadScreen(mainScreen);
 					loadScreen(optionScreen);
+					currentScreenID = OPTION_SCREEN_ID;
 					return true;
 				}
 				return false;
@@ -694,6 +712,7 @@ public class GameActivity extends BaseGameActivity implements
 					unloadScreen(mainScreen);
 					mScene.setBackground(new ColorBackground(0, 0, 0));
 					loadScreen(helpScreen);
+					currentScreenID = HELP_SCREEN_ID;
 					return true;
 				}
 				return false;
@@ -767,7 +786,7 @@ public class GameActivity extends BaseGameActivity implements
 					final float y) {
 				if (t.isActionDown()) {
 					unloadScreen(pauseScreen);
-
+					currentScreenID = NOSCREEN;
 					generateUpdateHandler();
 					isPaused = false;
 					return true;
@@ -838,6 +857,7 @@ public class GameActivity extends BaseGameActivity implements
 					CloseLevel();
 					unloadScreen(pauseScreen);
 					loadScreen(mainScreen);
+					currentScreenID = MAIN_SCREEN_ID;
 					isPaused = false;
 					return true;
 				}
@@ -919,7 +939,7 @@ public class GameActivity extends BaseGameActivity implements
 				if (t.isActionDown()) {
 					unloadScreen(aboutScreen);
 					loadScreen(mainScreen);
-
+					currentScreenID = MAIN_SCREEN_ID;
 					return true;
 				}
 				return false;
@@ -998,6 +1018,7 @@ public class GameActivity extends BaseGameActivity implements
 					unloadScreen(helpScreen);
 					mScene.setBackground(new SpriteBackground(mainBackground));
 					loadScreen(mainScreen);
+					currentScreenID = MAIN_SCREEN_ID;
 					return true;
 				}
 				return false;
@@ -1077,6 +1098,7 @@ public class GameActivity extends BaseGameActivity implements
 				if (t.isActionDown()) {
 					unloadScreen(optionScreen);
 					loadScreen(mainScreen);
+					currentScreenID = MAIN_SCREEN_ID;
 					return true;
 				}
 				return false;
@@ -1438,6 +1460,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
+										currentScreenID = NOSCREEN;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1473,6 +1496,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
+										currentScreenID = NOSCREEN;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1505,6 +1529,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
+										currentScreenID = NOSCREEN;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1538,6 +1563,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
+										currentScreenID = NOSCREEN;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1571,6 +1597,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
+										currentScreenID = NOSCREEN;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1604,6 +1631,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
+										currentScreenID = NOSCREEN;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1703,6 +1731,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(mainScreen);
+										currentScreenID = MAIN_SCREEN_ID;
 										return true;
 									}
 									return false;
@@ -2316,6 +2345,7 @@ public class GameActivity extends BaseGameActivity implements
 		preUpdates = 0;
 		//Loading screen is loaded		
 		loadScreen(loadingScreen);
+		currentScreenID = NOSCREEN;
 		//The world is loaded in another thread
 		Thread thread = new Thread(new LoadLevelThread());
 		thread.start();
@@ -2324,7 +2354,7 @@ public class GameActivity extends BaseGameActivity implements
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
+        if (keyCode == KeyEvent.KEYCODE_MENU && currentScreenID == NOSCREEN) {
             Log.d("MP", "MENU pressed");
             try {
                 GamePause();
@@ -2362,7 +2392,43 @@ public class GameActivity extends BaseGameActivity implements
 
         // Loading pause Screen
         loadScreen(pauseScreen);
+        currentScreenID = PAUSE_SCREEN_ID;
     }
+    
+    @Override
+	public void onBackPressed() {
+		   switch (currentScreenID) {
+		case OPTION_SCREEN_ID:
+			unloadScreen(optionScreen);
+			loadScreen(mainScreen);
+			currentScreenID = MAIN_SCREEN_ID;
+			break;
+		case HELP_SCREEN_ID:
+			unloadScreen(helpScreen);
+			mScene.setBackground(new SpriteBackground(mainBackground));
+			loadScreen(mainScreen);
+			currentScreenID = MAIN_SCREEN_ID;
+			break;
+		case ABOUT_SCREEN_ID: 
+			unloadScreen(aboutScreen);
+			loadScreen(mainScreen);
+			currentScreenID = MAIN_SCREEN_ID;
+			break;
+		//case CHOOSELEVEL_SCREEN_ID:
+		case PAUSE_SCREEN_ID:
+			unloadScreen(pauseScreen); 
+			generateUpdateHandler();
+			isPaused = false;
+			currentScreenID = NOSCREEN;
+			break;
+		case MAIN_SCREEN_ID:
+			finish();
+		case NOSCREEN:
+			GamePause();
+		default:
+			break;
+		}
+	}
 
 	@Override
 	public void onAccelerometerChanged(AccelerometerData pAccelerometerData) {
