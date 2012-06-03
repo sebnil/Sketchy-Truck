@@ -120,6 +120,7 @@ public class GameActivity extends BaseGameActivity implements
 	public static final int ABOUT_SCREEN_ID = 4;
 	public static final int CHOOSELEVEL_SCREEN_ID = 5;
 	public static final int PAUSE_SCREEN_ID = 6;
+	public static final int LOADING_SCREEN_ID = 7;
 	
 
 	// ===========================================================
@@ -294,7 +295,7 @@ public class GameActivity extends BaseGameActivity implements
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		//Main Background loading process note the file name if you need to change it
 		TextureRegion tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(tempTexture, this, "gfx/image 1.png", 0, 0);
+				.createFromAsset(tempTexture, this, "gfx/menubackground.png", 0, 0);  
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		mainBackground = new Sprite(0, 0, tempTextureRegion);
@@ -441,6 +442,7 @@ public class GameActivity extends BaseGameActivity implements
 				enableAccelerometerSensor(c);
 				levelStarted = true;
 				unloadScreen(loadingScreen);
+				currentScreenID = LOADING_SCREEN_ID;
 				LoadLevelSprites();
 			} else if (preUpdates >= 0)
 				preUpdates += pSecondsElapsed;
@@ -516,6 +518,7 @@ public class GameActivity extends BaseGameActivity implements
 					CloseLevel();
 					preUpdates = 0;
 					loadScreen(loadingScreen);
+					currentScreenID = LOADING_SCREEN_ID;
 					Thread thread = new Thread(new LoadLevelThread());
 					thread.start();
 					mScene.sortChildren();
@@ -1460,7 +1463,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
-										currentScreenID = NOSCREEN;
+										currentScreenID = LOADING_SCREEN_ID;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1496,7 +1499,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
-										currentScreenID = NOSCREEN;
+										currentScreenID = LOADING_SCREEN_ID;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1529,7 +1532,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
-										currentScreenID = NOSCREEN;
+										currentScreenID = LOADING_SCREEN_ID;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1563,7 +1566,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
-										currentScreenID = NOSCREEN;
+										currentScreenID = LOADING_SCREEN_ID;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1597,7 +1600,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
-										currentScreenID = NOSCREEN;
+										currentScreenID = LOADING_SCREEN_ID;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -1631,7 +1634,7 @@ public class GameActivity extends BaseGameActivity implements
 										unloadScreen(chooseLevelScreen
 												.get(index / 6));
 										loadScreen(loadingScreen);
-										currentScreenID = NOSCREEN;
+										currentScreenID = LOADING_SCREEN_ID;
 										actualLevelIndex = index;
 										Thread thread = new Thread(
 												new LoadLevelThread());
@@ -2345,7 +2348,7 @@ public class GameActivity extends BaseGameActivity implements
 		preUpdates = 0;
 		//Loading screen is loaded		
 		loadScreen(loadingScreen);
-		currentScreenID = NOSCREEN;
+		currentScreenID = LOADING_SCREEN_ID;
 		//The world is loaded in another thread
 		Thread thread = new Thread(new LoadLevelThread());
 		thread.start();
