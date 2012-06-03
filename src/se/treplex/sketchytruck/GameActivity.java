@@ -57,7 +57,9 @@ import org.w3c.dom.NodeList;
 
 import android.content.res.AssetManager;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -2317,6 +2319,48 @@ public class GameActivity extends BaseGameActivity implements
 		thread.start();
 		mScene.sortChildren();
 	}
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            Log.d("MP", "MENU pressed");
+            try {
+                GamePause();
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void GamePause() {
+        isPaused = true;
+
+        pressedLeft = pressedRight = false;
+        engineSound.stop();
+
+        mScene.unregisterUpdateHandler(levelWorldPhysics);
+        mEngine.unregisterUpdateHandler(upHand);
+
+        sp.ArrangeElements();
+        // Bringing the controls to the center of the camera
+        pauseScreen.get(0).setPosition(
+                    cameraBound.getMinX() + pauseScreen.get(0).getX(),
+                    cameraBound.getMinY() + +pauseScreen.get(0).getY());
+
+        pauseScreen.get(1).setPosition(
+                    cameraBound.getMinX() + pauseScreen.get(1).getX(),
+                    cameraBound.getMinY() + pauseScreen.get(1).getY());
+
+        pauseScreen.get(2).setPosition(
+                    cameraBound.getMinX() + pauseScreen.get(2).getX(),
+                    cameraBound.getMinY() + pauseScreen.get(2).getY());
+
+        // Loading pause Screen
+        loadScreen(pauseScreen);
+    }
 
 	@Override
 	public void onAccelerometerChanged(AccelerometerData pAccelerometerData) {
