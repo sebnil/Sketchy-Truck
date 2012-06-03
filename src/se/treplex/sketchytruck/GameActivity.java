@@ -295,7 +295,7 @@ public class GameActivity extends BaseGameActivity implements
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		//Main Background loading process note the file name if you need to change it
 		TextureRegion tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(tempTexture, this, "gfx/image 1.png", 0, 0);
+				.createFromAsset(tempTexture, this, "gfx/menubackground.png", 0, 0);  
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		mainBackground = new Sprite(0, 0, tempTextureRegion);
