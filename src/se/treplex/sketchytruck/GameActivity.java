@@ -79,7 +79,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 public class GameActivity extends BaseGameActivity implements
 		IOnSceneTouchListener, IAccelerometerListener {
 	// ===========================================================
-	// Constants
+    // Constants Test
 	// ===========================================================
 	public static final short CATEGORYBIT_NO = 0;
 	public static final short CATEGORYBIT_WALL = 1;
