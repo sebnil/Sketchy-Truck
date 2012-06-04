@@ -410,7 +410,7 @@ public class GameActivity extends BaseGameActivity implements
 				enableAccelerometerSensor(c);
 				levelStarted = true;
 				unloadScreen(loadingScreen);
-				currentScreenID = LOADING_SCREEN_ID;
+				currentScreenID = NOSCREEN;
 				LoadLevelSprites();
 			} else if (preUpdates >= 0)
 				preUpdates += pSecondsElapsed;
