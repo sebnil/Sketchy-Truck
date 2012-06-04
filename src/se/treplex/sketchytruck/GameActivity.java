@@ -51,6 +51,7 @@ import org.anddev.andengine.opengl.texture.region.TextureRegion;
 import org.anddev.andengine.sensor.accelerometer.AccelerometerData;
 import org.anddev.andengine.sensor.accelerometer.IAccelerometerListener;
 import org.anddev.andengine.ui.activity.BaseGameActivity;
+import org.anddev.andengine.ui.activity.LayoutGameActivity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -76,7 +77,7 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
-public class GameActivity extends BaseGameActivity implements
+public class GameActivity extends LayoutGameActivity implements
 		IOnSceneTouchListener, IAccelerometerListener {
 	// ===========================================================
     // Constants Test
@@ -2322,6 +2323,16 @@ public class GameActivity extends BaseGameActivity implements
 		thread.start();
 		mScene.sortChildren();
 	}
+
+    @Override
+    protected int getLayoutID() {
+        return R.layout.main;
+    }
+
+    @Override
+    protected int getRenderSurfaceViewID() {
+        return R.id.xmllayoutRenderSurfaceView;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

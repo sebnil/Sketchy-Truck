@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+
+<org.anddev.andengine.opengl.view.RenderSurfaceView
+android:id="@+id/xmllayoutRenderSurfaceView"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:layout_centerInParent="true"
+android:gravity="center" />
+
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="Hello World, GameActivity"
+    android:textSize="20sp"
+    android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
     />
-</LinearLayout>
+</RelativeLayout>
 
