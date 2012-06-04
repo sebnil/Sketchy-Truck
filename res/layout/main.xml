@@ -16,9 +16,10 @@ android:gravity="center" />
         android:id="@+id/imageButton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/controls" android:layout_centerInParent="true" 
+        android:src="@drawable/control_example" 
+        android:layout_centerInParent="true" 
         android:visibility="gone"
-       android:background="@null"/>
+        android:background="@null"/>
 
 </RelativeLayout>
 
