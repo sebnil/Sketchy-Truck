@@ -79,7 +79,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 public class GameActivity extends BaseGameActivity implements
 		IOnSceneTouchListener, IAccelerometerListener {
 	// ===========================================================
-    // Constants Test
+	// Constants
 	// ===========================================================
 	public static final short CATEGORYBIT_NO = 0;
 	public static final short CATEGORYBIT_WALL = 1;
@@ -121,6 +121,20 @@ public class GameActivity extends BaseGameActivity implements
 	public static final int CHOOSELEVEL_SCREEN_ID = 5;
 	public static final int PAUSE_SCREEN_ID = 6;
 	public static final int LOADING_SCREEN_ID = 7;
+	
+
+
+	// ===========================================================
+	// Physics Constants
+	// ===========================================================
+	
+	private static final float CAR_FORWARDS_TORQUE = 1000;
+	private static final float CAR_FORWARDS_SPEED = 20;
+	
+	private static final float CAR_BRAKE_TORQUE = 2000;
+	
+	private static final float CAR_REVERSE_TORQUE = 1000;
+	private static final float CAR_REVERSE_SPEED = -10;
 	
 
 	// ===========================================================
@@ -360,6 +374,38 @@ public class GameActivity extends BaseGameActivity implements
 					pressedLeft = pressedRight = false;
 					engineSound.stop();
 				}
+				//Pausing the game
+				else if (!isPaused && !pSceneTouchEvent.isActionMove()) {
+
+					isPaused = true;
+
+					pressedLeft = pressedRight = false;
+					engineSound.stop();
+
+					mScene.unregisterUpdateHandler(levelWorldPhysics);
+					mEngine.unregisterUpdateHandler(upHand);
+					
+					sp.ArrangeElements();
+					//Bringing the controls to the center of the camera
+					pauseScreen.get(0).setPosition(
+							cameraBound.getMinX() + pauseScreen.get(0).getX(),
+							cameraBound.getMinY() + + pauseScreen.get(0).getY());
+
+					pauseScreen.get(1).setPosition(
+							cameraBound.getMinX() + pauseScreen.get(1).getX(),
+							cameraBound.getMinY()+ pauseScreen.get(1).getY());
+
+					pauseScreen.get(2).setPosition(
+							cameraBound.getMinX() + pauseScreen.get(2).getX(),
+							cameraBound.getMinY()+ pauseScreen.get(2).getY());
+
+					//Loading pause Screen
+					loadScreen(pauseScreen);
+					currentScreenID = PAUSE_SCREEN_ID;
+					return true;
+
+				}
+
 			} else {
 				pressedLeft = pressedRight = false;
 				engineSound.stop();
@@ -410,30 +456,50 @@ public class GameActivity extends BaseGameActivity implements
 				enableAccelerometerSensor(c);
 				levelStarted = true;
 				unloadScreen(loadingScreen);
-				currentScreenID = NOSCREEN;
+				currentScreenID = LOADING_SCREEN_ID;
 				LoadLevelSprites();
 			} else if (preUpdates >= 0)
 				preUpdates += pSecondsElapsed;
 
 			final Display display = getWindowManager().getDefaultDisplay();
 			int CAMERA_WIDTH = display.getWidth();
+			
 			if (pressedRight) {
+				//accelerate forwards
 				mMotor1.enableMotor(true);
-				mMotor1.setMotorSpeed(20);
-				mMotor1.setMaxMotorTorque(1000);
+				mMotor1.setMotorSpeed(CAR_FORWARDS_SPEED);
+				mMotor1.setMaxMotorTorque(CAR_FORWARDS_TORQUE);
 
 				mMotor2.enableMotor(true);
-				mMotor2.setMotorSpeed(20);
-				mMotor2.setMaxMotorTorque(1000);
+				mMotor2.setMotorSpeed(CAR_FORWARDS_SPEED);
+				mMotor2.setMaxMotorTorque(CAR_FORWARDS_TORQUE);
+				
 			} else if (pressedLeft) {
-				mMotor1.enableMotor(true);
-				mMotor1.setMotorSpeed(0);
-				mMotor1.setMaxMotorTorque(2000);
+				//brake if wheels going forwards, otherwise reverse
+				
+				if(mMotor1.getMotorSpeed() > 0){
+					//brake
+					mMotor1.enableMotor(true);
+					mMotor1.setMotorSpeed(0);
+					mMotor1.setMaxMotorTorque(CAR_BRAKE_TORQUE);
+	
+					mMotor2.enableMotor(true);
+					mMotor2.setMotorSpeed(0);
+					mMotor2.setMaxMotorTorque(CAR_BRAKE_TORQUE);
+				}
+				else{
+					//reverse
+					mMotor1.enableMotor(true);
+					mMotor1.setMotorSpeed(CAR_REVERSE_SPEED);
+					mMotor1.setMaxMotorTorque(CAR_REVERSE_TORQUE);
 
-				mMotor2.enableMotor(true);
-				mMotor2.setMotorSpeed(0);
-				mMotor2.setMaxMotorTorque(2000);
+					mMotor2.enableMotor(true);
+					mMotor2.setMotorSpeed(CAR_REVERSE_SPEED);
+					mMotor2.setMaxMotorTorque(CAR_REVERSE_TORQUE);
+				}
+				
 			} else {
+				//coast (no acceleration/deceleration)
 				mMotor1.setMotorSpeed(0);
 				mMotor1.setMaxMotorTorque(0);
 				mMotor2.setMotorSpeed(0);
