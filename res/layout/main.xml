@@ -15,7 +15,6 @@ android:gravity="center" />
 <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="Hello World, GameActivity"
     android:textSize="20sp"
     android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
     />

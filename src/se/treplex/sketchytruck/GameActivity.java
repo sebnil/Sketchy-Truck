@@ -375,38 +375,6 @@ public class GameActivity extends LayoutGameActivity implements
 					pressedLeft = pressedRight = false;
 					engineSound.stop();
 				}
-				//Pausing the game
-				else if (!isPaused && !pSceneTouchEvent.isActionMove()) {
-
-					isPaused = true;
-
-					pressedLeft = pressedRight = false;
-					engineSound.stop();
-
-					mScene.unregisterUpdateHandler(levelWorldPhysics);
-					mEngine.unregisterUpdateHandler(upHand);
-					
-					sp.ArrangeElements();
-					//Bringing the controls to the center of the camera
-					pauseScreen.get(0).setPosition(
-							cameraBound.getMinX() + pauseScreen.get(0).getX(),
-							cameraBound.getMinY() + + pauseScreen.get(0).getY());
-
-					pauseScreen.get(1).setPosition(
-							cameraBound.getMinX() + pauseScreen.get(1).getX(),
-							cameraBound.getMinY()+ pauseScreen.get(1).getY());
-
-					pauseScreen.get(2).setPosition(
-							cameraBound.getMinX() + pauseScreen.get(2).getX(),
-							cameraBound.getMinY()+ pauseScreen.get(2).getY());
-
-					//Loading pause Screen
-					loadScreen(pauseScreen);
-					currentScreenID = PAUSE_SCREEN_ID;
-					return true;
-
-				}
-
 			} else {
 				pressedLeft = pressedRight = false;
 				engineSound.stop();
