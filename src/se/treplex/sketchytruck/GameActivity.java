@@ -342,9 +342,20 @@ public class GameActivity extends LayoutGameActivity implements
 		return mScene;
 	}
 
-	public void onLoadComplete() {
+	   public void onLoadComplete() {
+	               final ImageButton showHelp = (ImageButton) findViewById(R.id.imageButton1);
+	               showHelp.setOnClickListener(new View.OnClickListener() {
+	        
+	           @Override
+	                  public void onClick(View v) {
+	       
+	                       showHelp.setVisibility(View.GONE);
+	       
+	                  }
+	       
+	              });
+	           }
 
-	}
 
 	// Control of the taped area of the screen
 	public boolean onSceneTouchEvent(final Scene pScene,
