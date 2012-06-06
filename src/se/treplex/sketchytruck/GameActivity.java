@@ -112,7 +112,6 @@ public class GameActivity extends LayoutGameActivity implements
 	public static final FixtureDef ONLY_WALL_FIXTURE_DEF = PhysicsFactory
 			.createFixtureDef(1, 0.2f, 1f, false, CATEGORYBIT_CIRCLE,
 					MASKBITS_ONLY_WALL, (short) -1);
-	
 
 	public static final int NOSCREEN = 0;
 	public static final int MAIN_SCREEN_ID = 1;
@@ -122,34 +121,31 @@ public class GameActivity extends LayoutGameActivity implements
 	public static final int CHOOSELEVEL_SCREEN_ID = 5;
 	public static final int PAUSE_SCREEN_ID = 6;
 	public static final int LOADING_SCREEN_ID = 7;
-	
-
 
 	// ===========================================================
 	// Physics Constants
 	// ===========================================================
-	
+
 	private static final float CAR_FORWARDS_TORQUE = 1000;
 	private static final float CAR_FORWARDS_SPEED = 20;
-	
+
 	private static final float CAR_BRAKE_TORQUE = 2000;
-	
+
 	private static final float CAR_REVERSE_TORQUE = 1000;
 	private static final float CAR_REVERSE_SPEED = -10;
-	
 
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	//Flags to know wich side of the screen is pressed
+	// Flags to know wich side of the screen is pressed
 	boolean pressedLeft = false;
 	boolean pressedRight = false;
-	//Index of the actual level
+	// Index of the actual level
 	int actualLevelIndex = 0;
-	//Value selected by the user in the options
+	// Value selected by the user in the options
 	private float tiltAlpha = 0.5f;
 	private Scene mScene;
-	//Each one of the different screens of the game
+	// Each one of the different screens of the game
 	private ArrayList<Sprite> mainScreen;
 	private ArrayList<Sprite> loadingScreen;
 	private ArrayList<Sprite> pauseScreen;
@@ -157,24 +153,25 @@ public class GameActivity extends LayoutGameActivity implements
 	private ArrayList<Sprite> optionScreen;
 	private ArrayList<Sprite> helpScreen;
 	private ArrayList<ArrayList<Sprite>> chooseLevelScreen;
-	//holds the current chosen screen
+	// holds the current chosen screen
 	private int currentScreenID;
-	//Entities loaded in the level, use to release them from the scene when level finished
+	// Entities loaded in the level, use to release them from the scene when
+	// level finished
 	private ArrayList<IEntity> levelEntities;
 	private StackPanel sp;
-	
-	//Physics Engine
+
+	// Physics Engine
 	private PhysicsWorld levelWorldPhysics;
 	private BoundCamera cameraBound;
-	//Container of info for the level world to be loaded
+	// Container of info for the level world to be loaded
 	private LevelWorld actualWorld;
-	//Main background of the actual level
+	// Main background of the actual level
 	private Sprite levelBackground;
-	//back backgrounds for parallax
+	// back backgrounds for parallax
 	private ArrayList<Sprite> bbackground;
-	//Flag to know if you fall in a dead area
+	// Flag to know if you fall in a dead area
 	private boolean rest = false;
-	//Flag to know if you reach the end
+	// Flag to know if you reach the end
 	private boolean isFinish = false;
 	private Sprite line1;
 	private Sprite line2;
@@ -184,8 +181,8 @@ public class GameActivity extends LayoutGameActivity implements
 
 	private HashMap<String, TextureRegion> worldTextureRegionHashMap = new HashMap<String, TextureRegion>();
 	private HashMap<String, TextureRegion> gameTextureRegionHashMap = new HashMap<String, TextureRegion>();
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Physics Entities
+	// /////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Physics Entities
 	RevoluteJointDef motor1;
 	private RevoluteJoint mMotor1;
 	private RevoluteJoint mMotor2;
@@ -201,9 +198,9 @@ public class GameActivity extends LayoutGameActivity implements
 	private Body axle2Body;
 	Line connectionLine1;
 	Line connectionLine2;
-	List<MixedDataContainer> oEntities = new LinkedList<MixedDataContainer>();
-	LinkedList<Shape> areas = new LinkedList<Shape>();
-	Shape finish;
+	//List<MixedDataContainer> oEntities = new LinkedList<MixedDataContainer>();
+	//LinkedList<Shape> areas = new LinkedList<Shape>();
+	//Shape finish;
 	// car parameters
 	MixedDataContainer oCar = new MixedDataContainer();
 	MixedDataContainer pCar = new MixedDataContainer();
@@ -214,8 +211,8 @@ public class GameActivity extends LayoutGameActivity implements
 	private Sprite wheel1Face;
 	private Sprite wheel2Face;
 	private Sprite axle1Face;
-	private Sprite axle2Face;	
-	////////////////////////////////////////////////////////////////////////////////////////
+	private Sprite axle2Face;
+	// //////////////////////////////////////////////////////////////////////////////////////
 
 	// NUMBER of level in the folder levels
 	// a folder level has the following format "level[n]" where n is a number
@@ -223,21 +220,21 @@ public class GameActivity extends LayoutGameActivity implements
 	// The levels folder start their numbers from 0
 	private int NUMBRE_OF_LEVELS = 3;
 
-	//Sound of the car engine
+	// Sound of the car engine
 	private Sound engineSound;
-	//Path of this sound
+	// Path of this sound
 	private String engineSoundPath = "click-many-effect.mp3";
-	//Flag to know if the level is fully loaded
+	// Flag to know if the level is fully loaded
 	private boolean levelStarted;
-	//Updater instance of the scene used to later be unregistered
+	// Updater instance of the scene used to later be unregistered
 	private myUpdateHandler upHand = new myUpdateHandler(this);
-	//Flag to know if the game is paused
+	// Flag to know if the game is paused
 	private boolean isPaused;
-	//Application Main Background(Screens)
+	// Application Main Background(Screens)
 	private Sprite mainBackground;
-	//Textures to be unloaded whe needed to free memory
+	// Textures to be unloaded whe needed to free memory
 	private ArrayList<ITexture> textures;
-	//Cumul of second waiting for loading
+	// Cumul of second waiting for loading
 	float preUpdates = 0;
 
 	// ===========================================================
@@ -256,30 +253,30 @@ public class GameActivity extends LayoutGameActivity implements
 		final Display display = getWindowManager().getDefaultDisplay();
 		int CAMERA_WIDTH = display.getWidth();
 		int CAMERA_HEIGHT = display.getHeight();
-		//Chase Camera creation
+		// Chase Camera creation
 		cameraBound = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, 0,
 				CAMERA_WIDTH, 0, CAMERA_HEIGHT);
 		cameraBound.setBoundsEnabled(true);
 
-		//Engine initialization
+		// Engine initialization
 		final EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(
 						CAMERA_WIDTH, CAMERA_HEIGHT), cameraBound)
 				.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 		engineOptions.getTouchOptions().setRunOnUpdateThread(true);
-		
-		//Setting the use of music
+
+		// Setting the use of music
 		engineOptions.setNeedsMusic(true);
 		engineOptions.setNeedsSound(true);
 		return new Engine(engineOptions);
 	}
 
 	public void onLoadResources() {
-		
-		//Try to load the music of the game
+
+		// Try to load the music of the game
 		try {
-			engineSound = SoundFactory.createSoundFromAsset(mEngine
-					.getSoundManager(), this, "sfx/" + engineSoundPath);
+			engineSound = SoundFactory.createSoundFromAsset(
+					mEngine.getSoundManager(), this, "sfx/" + engineSoundPath);
 			engineSound.setLooping(true);
 			engineSound.setVolume(0.5f);
 		} catch (Exception e) {
@@ -308,24 +305,27 @@ public class GameActivity extends LayoutGameActivity implements
 
 		BitmapTextureAtlas tempTexture = new BitmapTextureAtlas(4096, 2048,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		//Main Background loading process note the file name if you need to change it
+		// Main Background loading process note the file name if you need to
+		// change it
 		TextureRegion tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(tempTexture, this, "gfx/menubackground.png", 0, 0);  
+				.createFromAsset(tempTexture, this, "gfx/menubackground.png",
+						0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		mainBackground = new Sprite(0, 0, tempTextureRegion);
 		mainBackground.setScaleCenter(0, 0);
 		final Display display = getWindowManager().getDefaultDisplay();
 		int CAMERA_WIDTH = display.getWidth();
-		int CAMERA_HEIGHT= display.getHeight();
-		
-		mainBackground.setScale(CAMERA_WIDTH / mainBackground.getWidth(), CAMERA_HEIGHT / mainBackground.getHeight());
-		//Scene creation
+		int CAMERA_HEIGHT = display.getHeight();
+
+		mainBackground.setScale(CAMERA_WIDTH / mainBackground.getWidth(),
+				CAMERA_HEIGHT / mainBackground.getHeight());
+		// Scene creation
 		mScene = new Scene();
 		mScene.setBackground(new SpriteBackground(mainBackground));
 		mScene.setOnSceneTouchListener(this);
 
-		//Intialization of the different screens
+		// Intialization of the different screens
 		initializeMainScreen();
 		intializeLoadingScreen();
 		initializeHelpScreen();
@@ -334,28 +334,27 @@ public class GameActivity extends LayoutGameActivity implements
 		initializePauseScreen();
 		loadLevelsInfo();
 
-		//Enabeling the use of the touch areas
+		// Enabeling the use of the touch areas
 		mScene.setTouchAreaBindingEnabled(true);
-		//Load the main screen of the game
+		// Load the main screen of the game
 		loadScreen(mainScreen);
 		currentScreenID = MAIN_SCREEN_ID;
 		return mScene;
 	}
 
-	   public void onLoadComplete() {
-	               final ImageButton showHelp = (ImageButton) findViewById(R.id.imageButton1);
-	               showHelp.setOnClickListener(new View.OnClickListener() {
-	        
-	           @Override
-	                  public void onClick(View v) {
-	       
-	                       showHelp.setVisibility(View.GONE);
-	       
-	                  }
-	       
-	              });
-	           }
+	public void onLoadComplete() {
+		final ImageButton showHelp = (ImageButton) findViewById(R.id.imageButton1);
+		showHelp.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+
+				showHelp.setVisibility(View.GONE);
+
+			}
+
+		});
+	}
 
 	// Control of the taped area of the screen
 	public boolean onSceneTouchEvent(final Scene pScene,
@@ -363,13 +362,14 @@ public class GameActivity extends LayoutGameActivity implements
 		final Display display = getWindowManager().getDefaultDisplay();
 		int CAMERA_WIDTH = display.getWidth();
 
-		//If the level is no started there is no need of do any thing
+		// If the level is no started there is no need of do any thing
 		if (!levelStarted)
 			return false;
-		//If the game is not in pause 
+		// If the game is not in pause
 		if (!isPaused)
-			//Look for the region touched to set flags
-			if (pSceneTouchEvent.isActionDown()|| pSceneTouchEvent.isActionMove()) {
+			// Look for the region touched to set flags
+			if (pSceneTouchEvent.isActionDown()
+					|| pSceneTouchEvent.isActionMove()) {
 				if (pSceneTouchEvent.getMotionEvent().getRawX() > CAMERA_WIDTH
 						/ 2 + CAMERA_WIDTH / 4) {
 
@@ -382,7 +382,7 @@ public class GameActivity extends LayoutGameActivity implements
 					pressedLeft = true;
 					pressedRight = false;
 					engineSound.stop();
-				} else if(!isPaused && pSceneTouchEvent.isActionMove()){
+				} else if (!isPaused && pSceneTouchEvent.isActionMove()) {
 					pressedLeft = pressedRight = false;
 					engineSound.stop();
 				}
@@ -397,7 +397,7 @@ public class GameActivity extends LayoutGameActivity implements
 	@Override
 	public void onResumeGame() {
 		super.onResumeGame();
-		//finish();
+		// finish();
 		int a = 10;
 	}
 
@@ -411,24 +411,25 @@ public class GameActivity extends LayoutGameActivity implements
 	// ===========================================================
 	// Inner and Anonymous Classes
 	// ===========================================================
-	
+
 	private void generateUpdateHandler() {
 		upHand = new myUpdateHandler(this);
 		this.mEngine.registerUpdateHandler(upHand);
 		this.mScene.registerUpdateHandler(levelWorldPhysics);
 	}
-	
-	//Update handler of the Entire application
+
+	// Update handler of the Entire application
 	// update position and looking if you are in a dead area for restart or if
 	// you reached the finish line
 	// also here is the checking for the left and right pressed flags
 	class myUpdateHandler implements IUpdateHandler {
-		
+
 		IAccelerometerListener c;
-		public myUpdateHandler(IAccelerometerListener c){
+
+		public myUpdateHandler(IAccelerometerListener c) {
 			this.c = c;
 		}
-		
+
 		public void onUpdate(float pSecondsElapsed) {
 
 			if (preUpdates > 3) {
@@ -443,9 +444,9 @@ public class GameActivity extends LayoutGameActivity implements
 
 			final Display display = getWindowManager().getDefaultDisplay();
 			int CAMERA_WIDTH = display.getWidth();
-			
+
 			if (pressedRight) {
-				//accelerate forwards
+				// accelerate forwards
 				mMotor1.enableMotor(true);
 				mMotor1.setMotorSpeed(CAR_FORWARDS_SPEED);
 				mMotor1.setMaxMotorTorque(CAR_FORWARDS_TORQUE);
@@ -453,22 +454,21 @@ public class GameActivity extends LayoutGameActivity implements
 				mMotor2.enableMotor(true);
 				mMotor2.setMotorSpeed(CAR_FORWARDS_SPEED);
 				mMotor2.setMaxMotorTorque(CAR_FORWARDS_TORQUE);
-				
+
 			} else if (pressedLeft) {
-				//brake if wheels going forwards, otherwise reverse
-				
-				if(mMotor1.getMotorSpeed() > 0){
-					//brake
+				// brake if wheels going forwards, otherwise reverse
+
+				if (mMotor1.getMotorSpeed() > 0) {
+					// brake
 					mMotor1.enableMotor(true);
 					mMotor1.setMotorSpeed(0);
 					mMotor1.setMaxMotorTorque(CAR_BRAKE_TORQUE);
-	
+
 					mMotor2.enableMotor(true);
 					mMotor2.setMotorSpeed(0);
 					mMotor2.setMaxMotorTorque(CAR_BRAKE_TORQUE);
-				}
-				else{
-					//reverse
+				} else {
+					// reverse
 					mMotor1.enableMotor(true);
 					mMotor1.setMotorSpeed(CAR_REVERSE_SPEED);
 					mMotor1.setMaxMotorTorque(CAR_REVERSE_TORQUE);
@@ -477,9 +477,9 @@ public class GameActivity extends LayoutGameActivity implements
 					mMotor2.setMotorSpeed(CAR_REVERSE_SPEED);
 					mMotor2.setMaxMotorTorque(CAR_REVERSE_TORQUE);
 				}
-				
+
 			} else {
-				//coast (no acceleration/deceleration)
+				// coast (no acceleration/deceleration)
 				mMotor1.setMotorSpeed(0);
 				mMotor1.setMaxMotorTorque(0);
 				mMotor2.setMotorSpeed(0);
@@ -509,23 +509,22 @@ public class GameActivity extends LayoutGameActivity implements
 			// springs
 			mSpring1.setMaxMotorForce((float) (40 + Math.abs(400 * Math.pow(
 					mSpring1.getJointTranslation(), 2))));
-			mSpring1
-					.setMotorSpeed((float) ((mSpring1.getMotorSpeed() - 10 * mSpring1
-							.getJointTranslation()) * 0.4));
+			mSpring1.setMotorSpeed((float) ((mSpring1.getMotorSpeed() - 10 * mSpring1
+					.getJointTranslation()) * 0.4));
 
 			mSpring2.setMaxMotorForce((float) (40 + Math.abs(400 * Math.pow(
 					mSpring2.getJointTranslation(), 2))));
-			mSpring2
-					.setMotorSpeed((float) ((mSpring2.getMotorSpeed() - 10 * mSpring2
-							.getJointTranslation()) * 0.4));
-			
-			//If you are in a dead area then Restart
+			mSpring2.setMotorSpeed((float) ((mSpring2.getMotorSpeed() - 10 * mSpring2
+					.getJointTranslation()) * 0.4));
+
+			// If you are in a dead area then Restart
 			if (rest)
 				Restart();
 			rest = false;
 
-			//If you reach the end, you will go to the next level in case there is one in other case
-			//the main screen will be shown
+			// If you reach the end, you will go to the next level in case there
+			// is one in other case
+			// the main screen will be shown
 			if (isFinish)
 				if (actualLevelIndex < NUMBRE_OF_LEVELS - 1) {
 					actualLevelIndex++;
@@ -543,12 +542,16 @@ public class GameActivity extends LayoutGameActivity implements
 					currentScreenID = MAIN_SCREEN_ID;
 				}
 			isFinish = false;
-			
-			//Update for the different backs in the parallax
-			for (Sprite sp : bbackground) {
-				float val = ((levelBackground.getWidthScaled() - sp.getWidthScaled()) / (levelBackground.getWidthScaled() - CAMERA_WIDTH))
-						* cameraBound.getMinX();
-				sp.setPosition(val, 0);
+
+			// Update for the different backs in the parallax
+			if (bbackground != null) {
+				for (Sprite sp : bbackground) {
+					float val = ((levelBackground.getWidthScaled() - sp
+							.getWidthScaled()) / (levelBackground
+							.getWidthScaled() - CAMERA_WIDTH))
+							* cameraBound.getMinX();
+					sp.setPosition(val, 0);
+				}
 			}
 		}
 
@@ -561,7 +564,8 @@ public class GameActivity extends LayoutGameActivity implements
 		for (Sprite sprite : screen) {
 			mScene.detachChild(sprite);
 			mScene.unregisterTouchArea(sprite);
-			mEngine.getTextureManager().unloadTexture(sprite.getTextureRegion().getTexture());
+			mEngine.getTextureManager().unloadTexture(
+					sprite.getTextureRegion().getTexture());
 		}
 	}
 
@@ -570,7 +574,8 @@ public class GameActivity extends LayoutGameActivity implements
 		for (Sprite sprite : screen) {
 			mScene.attachChild(sprite);
 			mScene.registerTouchArea(sprite);
-			mEngine.getTextureManager().loadTexture(sprite.getTextureRegion().getTexture());
+			mEngine.getTextureManager().loadTexture(
+					sprite.getTextureRegion().getTexture());
 		}
 	}
 
@@ -596,17 +601,17 @@ public class GameActivity extends LayoutGameActivity implements
 						0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-        Sprite tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-                .getWidth()), getCenter(CAMERA_HEIGHT, 4 * tempTextureRegion
-                        .getHeight() + 20), tempTextureRegion);
+		Sprite tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				4 * tempTextureRegion.getHeight() + 20), tempTextureRegion);
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.5f;
-		us.height = 1/5f;
-        us.leftMargin = 0.26f;
-        us.topMargin = 0.01f;
+
+		us.width = 0.5f;
+		us.height = 1 / 5f;
+		us.leftMargin = 0.26f;
+		us.topMargin = 0.01f;
 		us.SetProperties();
-		
+
 		mainScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 256,
@@ -632,50 +637,50 @@ public class GameActivity extends LayoutGameActivity implements
 		};
 
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.2f;
-		us.height = 1/9f;
+		us.height = 1 / 9f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		mainScreen.add(us.sprite);
-		
-		StackPanel sp = new StackPanel(CAMERA_WIDTH, CAMERA_HEIGHT);		
+
+		StackPanel sp = new StackPanel(CAMERA_WIDTH, CAMERA_HEIGHT);
 
 		tempTexture = new BitmapTextureAtlas(512, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset(tempTexture, this, "gfx/newgamebutton.png", 0,
+				.createFromAsset(tempTexture, this, "gfx/newgamebutton.png", 0,
 						0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 4 * tempTextureRegion
-				.getHeight() + 20), tempTextureRegion) {
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				4 * tempTextureRegion.getHeight() + 20), tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
 					final float y) {
 				if (t.isActionDown()) {
 					unloadScreen(mainScreen);
 
-					if (chooseLevelScreen.size() > 0)  {
+					if (chooseLevelScreen.size() > 0) {
 						loadScreen(chooseLevelScreen.get(0));
 						currentScreenID = CHOOSELEVEL_SCREEN_ID;
 					}
 					return true;
 				}
 				return false;
-            }
-        };
+			}
+		};
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
 
 		tempTexture = new BitmapTextureAtlas(512, 256,
@@ -685,9 +690,9 @@ public class GameActivity extends LayoutGameActivity implements
 						0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 4 * tempTextureRegion
-				.getHeight() + 20)
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				4 * tempTextureRegion.getHeight() + 20)
 				+ tempTextureRegion.getHeight() + 10, tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
@@ -701,15 +706,15 @@ public class GameActivity extends LayoutGameActivity implements
 				return false;
 			}
 		};
-		
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
 
 		tempTexture = new BitmapTextureAtlas(512, 256,
@@ -717,11 +722,12 @@ public class GameActivity extends LayoutGameActivity implements
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(tempTexture, this, "gfx/helpbutton.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
-		
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 4 * tempTextureRegion
-				.getHeight() + 20)
-				+ 2 * tempTextureRegion.getHeight() + 20, tempTextureRegion) {
+
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				4 * tempTextureRegion.getHeight() + 20)
+				+ 2
+				* tempTextureRegion.getHeight() + 20, tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
 					final float y) {
@@ -735,27 +741,28 @@ public class GameActivity extends LayoutGameActivity implements
 				return false;
 			}
 		};
-		
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
-		
+
 		tempTexture = new BitmapTextureAtlas(512, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(tempTexture, this, "gfx/quitbutton.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 4 * tempTextureRegion
-				.getHeight() + 20)
-				+ 3 * tempTextureRegion.getHeight() + 30, tempTextureRegion) {
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				4 * tempTextureRegion.getHeight() + 20)
+				+ 3
+				* tempTextureRegion.getHeight() + 30, tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
 					final float y) {
@@ -766,19 +773,19 @@ public class GameActivity extends LayoutGameActivity implements
 				return false;
 			}
 		};
-		
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
-		
+
 		for (UIElement element : sp.elements) {
-			mainScreen.add(((UISprite)element).sprite);
+			mainScreen.add(((UISprite) element).sprite);
 		}
 	}
 
@@ -788,16 +795,16 @@ public class GameActivity extends LayoutGameActivity implements
 		int CAMERA_HEIGHT = display.getHeight();
 
 		pauseScreen = new ArrayList<Sprite>();
-		
+
 		BitmapTextureAtlas tempTexture = new BitmapTextureAtlas(512, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		TextureRegion tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(tempTexture, this, "gfx/resume.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		Sprite tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 3 * tempTextureRegion
-				.getHeight() + 20), tempTextureRegion) {
+		Sprite tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				3 * tempTextureRegion.getHeight() + 20), tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
 					final float y) {
@@ -812,15 +819,15 @@ public class GameActivity extends LayoutGameActivity implements
 			}
 		};
 		sp = new StackPanel(CAMERA_WIDTH, CAMERA_HEIGHT);
-		
+
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
 
 		tempTexture = new BitmapTextureAtlas(512, 256,
@@ -829,10 +836,11 @@ public class GameActivity extends LayoutGameActivity implements
 				.createFromAsset(tempTexture, this, "gfx/restart.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 3 * tempTextureRegion
-				.getHeight() + 20)
-				+ 2 * tempTextureRegion.getHeight() + 20, tempTextureRegion) {
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				3 * tempTextureRegion.getHeight() + 20)
+				+ 2
+				* tempTextureRegion.getHeight() + 20, tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
 					final float y) {
@@ -847,13 +855,13 @@ public class GameActivity extends LayoutGameActivity implements
 		};
 
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
 
 		tempTexture = new BitmapTextureAtlas(512, 256,
@@ -862,9 +870,9 @@ public class GameActivity extends LayoutGameActivity implements
 				.createFromAsset(tempTexture, this, "gfx/quitbutton.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, 3 * tempTextureRegion
-				.getHeight() + 20)
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				3 * tempTextureRegion.getHeight() + 20)
 				+ tempTextureRegion.getHeight() + 10, tempTextureRegion) {
 			@Override
 			public boolean onAreaTouched(final TouchEvent t, final float x,
@@ -883,17 +891,17 @@ public class GameActivity extends LayoutGameActivity implements
 		};
 
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
-        us.width = 0.41f;
-        us.height = 1 / 8f;
+
+		us.width = 0.41f;
+		us.height = 1 / 8f;
 		us.bottomMargin = 0.0f;
 		us.rightMargin = 0.0f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
-		
+
 		for (UIElement element : sp.elements) {
-			pauseScreen.add(((UISprite)element).sprite);
+			pauseScreen.add(((UISprite) element).sprite);
 		}
 	}
 
@@ -912,13 +920,13 @@ public class GameActivity extends LayoutGameActivity implements
 
 		Sprite tempSprite = new Sprite(10, 5, tempTextureRegion);
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.4f;
 		us.height = 0.23f;
 		us.leftMargin = 0.05f;
-		us.topMargin = 0.05f;		
+		us.topMargin = 0.05f;
 		us.SetProperties();
-		
+
 		aboutScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -928,18 +936,18 @@ public class GameActivity extends LayoutGameActivity implements
 						0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, tempTextureRegion
-				.getHeight()), tempTextureRegion);
-		
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				tempTextureRegion.getHeight()), tempTextureRegion);
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.7f;
-		us.height = 1/2f;		
+		us.height = 1 / 2f;
 		us.SetProperties();
 		us.SetHorizontalAligmentCenter();
 		us.SetVerticalAligmentCenter();
-		
+
 		aboutScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -962,15 +970,15 @@ public class GameActivity extends LayoutGameActivity implements
 				return false;
 			}
 		};
-		
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.1f;
 		us.height = 0.15f;
 		us.leftMargin = 0.01f;
-		us.bottomMargin = 0.01f;		
+		us.bottomMargin = 0.01f;
 		us.SetProperties();
-		
+
 		aboutScreen.add(us.sprite);
 	}
 
@@ -988,15 +996,15 @@ public class GameActivity extends LayoutGameActivity implements
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		Sprite tempSprite = new Sprite(10, 5, tempTextureRegion);
-		
+
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.4f;
 		us.height = 0.23f;
 		us.leftMargin = 0.05f;
-		us.topMargin = 0.02f;		
+		us.topMargin = 0.02f;
 		us.SetProperties();
-		
+
 		helpScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -1006,18 +1014,18 @@ public class GameActivity extends LayoutGameActivity implements
 						0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, tempTextureRegion
-				.getHeight()), tempTextureRegion);
-		
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				tempTextureRegion.getHeight()), tempTextureRegion);
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.83f;
 		us.height = 0.725f;
 		us.SetProperties();
 		us.SetHorizontalAligmentCenter();
 		us.SetVerticalAligmentCenter();
-		
+
 		helpScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -1041,15 +1049,15 @@ public class GameActivity extends LayoutGameActivity implements
 				return false;
 			}
 		};
-		
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.1f;
 		us.height = 0.15f;
 		us.leftMargin = 0.01f;
-		us.bottomMargin = 0.01f;		
+		us.bottomMargin = 0.01f;
 		us.SetProperties();
-		
+
 		helpScreen.add(us.sprite);
 	}
 
@@ -1068,15 +1076,15 @@ public class GameActivity extends LayoutGameActivity implements
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		Sprite tempSprite = new Sprite(10, 5, tempTextureRegion);
-		
+
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.4f;
 		us.height = 0.23f;
 		us.leftMargin = 0.05f;
-		us.topMargin = 0.02f;		
+		us.topMargin = 0.02f;
 		us.SetProperties();
-		
+
 		optionScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -1088,17 +1096,17 @@ public class GameActivity extends LayoutGameActivity implements
 		final float cx, cy;
 		cx = getCenter(CAMERA_WIDTH, tempTextureRegion.getWidth());
 		cy = getCenter(CAMERA_HEIGHT, tempTextureRegion.getHeight());
-		tempSprite = new Sprite(getCenter(CAMERA_WIDTH, tempTextureRegion
-				.getWidth()), getCenter(CAMERA_HEIGHT, tempTextureRegion
-				.getHeight()), tempTextureRegion);
+		tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
+				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
+				tempTextureRegion.getHeight()), tempTextureRegion);
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.875f;
-		us.height = 0.625f;	
+		us.height = 0.625f;
 		us.SetProperties();
 		us.SetHorizontalAligmentCenter();
 		us.SetVerticalAligmentCenter();
-		
+
 		optionScreen.add(us.sprite);
 
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -1122,15 +1130,15 @@ public class GameActivity extends LayoutGameActivity implements
 			}
 		};
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.1f;
 		us.height = 0.15f;
 		us.leftMargin = 0.01f;
-		us.bottomMargin = 0.01f;		
+		us.bottomMargin = 0.01f;
 		us.SetProperties();
-		
+
 		optionScreen.add(us.sprite);
-		
+
 		StackPanel sp = new StackPanel(CAMERA_WIDTH, CAMERA_HEIGHT);
 		sp.elementsMargin = 0.3f;
 		tempTexture = new BitmapTextureAtlas(512, 512,
@@ -1140,15 +1148,15 @@ public class GameActivity extends LayoutGameActivity implements
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		tempSprite = new Sprite(5, CAMERA_HEIGHT
-				- tempTextureRegion.getHeight(), tempTextureRegion) ;
+				- tempTextureRegion.getHeight(), tempTextureRegion);
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.78f;
-		us.height = 0.05f;	
+		us.height = 0.05f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
-		
+
 		tempTexture = new BitmapTextureAtlas(512, 512,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -1156,42 +1164,49 @@ public class GameActivity extends LayoutGameActivity implements
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
 		tempSprite = new Sprite(5, CAMERA_HEIGHT
-				- tempTextureRegion.getHeight(), tempTextureRegion) ;
+				- tempTextureRegion.getHeight(), tempTextureRegion);
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.78f;
-		us.height = 0.05f;	
+		us.height = 0.05f;
 		us.SetProperties();
 		sp.AddElement(us);
 		for (UIElement element : sp.elements) {
-			optionScreen.add(((UISprite)element).sprite);
+			optionScreen.add(((UISprite) element).sprite);
 		}
-		
+
 		final float thumbStart = us.sprite.getX();
-		final float thumbEnd = us.sprite.getX() + us.actualWidth - CAMERA_WIDTH * 0.07f;
-				
+		final float thumbEnd = us.sprite.getX() + us.actualWidth - CAMERA_WIDTH
+				* 0.07f;
+
 		tempTexture = new BitmapTextureAtlas(512, 512,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(tempTexture, this, "gfx/lineYellow.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		line1 = new Sprite(thumbStart, ((UISprite)sp.elements.get(0)).sprite.getY(), tempTextureRegion) ;
+		line1 = new Sprite(thumbStart,
+				((UISprite) sp.elements.get(0)).sprite.getY(),
+				tempTextureRegion);
 		line1.setScaleCenter(0, 0);
-		line1.setScale(((thumbEnd - thumbStart)/2.0f) / line1.getWidth(), us.sy);
+		line1.setScale(((thumbEnd - thumbStart) / 2.0f) / line1.getWidth(),
+				us.sy);
 		optionScreen.add(line1);
-		
+
 		tempTexture = new BitmapTextureAtlas(512, 512,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(tempTexture, this, "gfx/lineYellow.png", 0, 0);
 		mEngine.getTextureManager().loadTexture(tempTexture);
 
-		line2 = new Sprite(thumbStart, ((UISprite)sp.elements.get(1)).sprite.getY(), tempTextureRegion) ;
+		line2 = new Sprite(thumbStart,
+				((UISprite) sp.elements.get(1)).sprite.getY(),
+				tempTextureRegion);
 		line2.setScaleCenter(0, 0);
-		line2.setScale(((thumbEnd - thumbStart)/2.0f) / line2.getWidth(), us.sy);
+		line2.setScale(((thumbEnd - thumbStart) / 2.0f) / line2.getWidth(),
+				us.sy);
 		optionScreen.add(line2);
-		
+
 		sp = new StackPanel(CAMERA_WIDTH, CAMERA_HEIGHT);
 		sp.elementsMargin = 0.28f;
 
@@ -1213,17 +1228,17 @@ public class GameActivity extends LayoutGameActivity implements
 
 					engineSound.setVolume((xp - thumbStart)
 							/ (thumbEnd - thumbStart));
-					line1.setScaleX((xp - thumbStart)/line1.getWidth());
+					line1.setScaleX((xp - thumbStart) / line1.getWidth());
 					return true;
 				}
 				return false;
 			}
 		};
-		
+
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.07f;
-		us.height = 0.07f;	
+		us.height = 0.07f;
 		us.SetProperties();
 		sp.AddElement(us);
 
@@ -1242,7 +1257,7 @@ public class GameActivity extends LayoutGameActivity implements
 					xp = Math.max(thumbStart, xp);
 					xp = Math.min(thumbEnd, xp);
 					this.setPosition(xp, this.getY());
-					line2.setScaleX((xp - thumbStart) / line2.getWidth() );
+					line2.setScaleX((xp - thumbStart) / line2.getWidth());
 					tiltAlpha = (xp - thumbStart) / (thumbEnd - thumbStart);
 					return true;
 				}
@@ -1250,14 +1265,14 @@ public class GameActivity extends LayoutGameActivity implements
 			}
 		};
 		us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.07f;
-		us.height = 0.07f;	
+		us.height = 0.07f;
 		us.SetProperties();
-		
+
 		sp.AddElement(us);
 		for (UIElement element : sp.elements) {
-			optionScreen.add(((UISprite)element).sprite);
+			optionScreen.add(((UISprite) element).sprite);
 		}
 	}
 
@@ -1277,15 +1292,15 @@ public class GameActivity extends LayoutGameActivity implements
 		Sprite tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
 				tempTextureRegion.getWidth()), getCenter(CAMERA_HEIGHT,
 				tempTextureRegion.getHeight()), tempTextureRegion);
-		
+
 		UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-		
+
 		us.width = 0.83f;
 		us.height = 0.725f;
 		us.SetProperties();
 		us.SetHorizontalAligmentCenter();
 		us.SetVerticalAligmentCenter();
-		
+
 		loadingScreen.add(us.sprite);
 	}
 
@@ -1336,11 +1351,12 @@ public class GameActivity extends LayoutGameActivity implements
 								return false;
 							}
 						};
-						UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-						
+						UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+								tempSprite);
+
 						us.width = 0.05f;
 						us.height = 0.14f;
-						us.leftMargin = 0.04f;						
+						us.leftMargin = 0.04f;
 						us.SetProperties();
 						us.SetVerticalAligmentCenter();
 						tempLevel.add(us.sprite);
@@ -1369,12 +1385,13 @@ public class GameActivity extends LayoutGameActivity implements
 							return false;
 						}
 					};
-					
-					UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-					
+
+					UISprite us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+							tempSprite);
+
 					us.width = 0.05f;
 					us.height = 0.14f;
-					us.rightMargin = 0.02f;						
+					us.rightMargin = 0.02f;
 					us.SetProperties();
 					us.SetVerticalAligmentCenter();
 					tempLevel.add(us.sprite);
@@ -1388,11 +1405,11 @@ public class GameActivity extends LayoutGameActivity implements
 
 					tempSprite = new Sprite(10, 5, tempTextureRegion);
 					us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-						
+
 					us.width = 0.4f;
 					us.height = 0.23f;
 					us.leftMargin = 0.05f;
-					us.topMargin = 0.02f;		
+					us.topMargin = 0.02f;
 					us.SetProperties();
 					tempLevel.add(us.sprite);
 
@@ -1418,13 +1435,13 @@ public class GameActivity extends LayoutGameActivity implements
 						}
 					};
 					us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-					
+
 					us.width = 0.1f;
 					us.height = 0.15f;
 					us.leftMargin = 0.01f;
-					us.bottomMargin = 0.01f;		
+					us.bottomMargin = 0.01f;
 					us.SetProperties();
-					
+
 					tempLevel.add(us.sprite);
 
 					chooseLevelScreen.add(tempLevel);
@@ -1463,11 +1480,13 @@ public class GameActivity extends LayoutGameActivity implements
 										levelCaption, 0, 0);
 						mEngine.getTextureManager().loadTexture(tempTexture);
 						UISprite us = null;
-						if (i % 6 == 0){
-							tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
-									tempTextureRegion.getWidth() * 3),
-									getCenter(CAMERA_HEIGHT, tempTextureRegion
-											.getHeight() * 2 + 100),
+						if (i % 6 == 0) {
+							tempSprite = new Sprite(
+									getCenter(CAMERA_WIDTH,
+											tempTextureRegion.getWidth() * 3),
+									getCenter(
+											CAMERA_HEIGHT,
+											tempTextureRegion.getHeight() * 2 + 100),
 									tempTextureRegion) {
 								@Override
 								public boolean onAreaTouched(
@@ -1488,7 +1507,8 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
 							us.width = 0.17f;
 							us.height = 0.12f;
 							us.leftMargin = 0.1225f;
@@ -1496,12 +1516,14 @@ public class GameActivity extends LayoutGameActivity implements
 							us.SetProperties();
 						}
 
-						if (i % 6 == 3){
-							tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
-									tempTextureRegion.getWidth() * 3)
-									+ tempTextureRegion.getWidth() * 2,
-									getCenter(CAMERA_HEIGHT, tempTextureRegion
-											.getHeight() * 2 + 100)
+						if (i % 6 == 3) {
+							tempSprite = new Sprite(
+									getCenter(CAMERA_WIDTH,
+											tempTextureRegion.getWidth() * 3)
+											+ tempTextureRegion.getWidth() * 2,
+									getCenter(
+											CAMERA_HEIGHT,
+											tempTextureRegion.getHeight() * 2 + 100)
 											+ 100
 											+ tempTextureRegion.getHeight(),
 									tempTextureRegion) {
@@ -1524,19 +1546,22 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
 							us.width = 0.17f;
 							us.height = 0.12f;
 							us.leftMargin = 0.1225f;
 							us.topMargin = 0.3f + 0.34f;
 							us.SetProperties();
 						}
-						if (i % 6 == 1){
-							tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
-									tempTextureRegion.getWidth() * 3)
-									+ tempTextureRegion.getWidth() * 2,
-									getCenter(CAMERA_HEIGHT, tempTextureRegion
-											.getHeight() * 2 + 100),
+						if (i % 6 == 1) {
+							tempSprite = new Sprite(
+									getCenter(CAMERA_WIDTH,
+											tempTextureRegion.getWidth() * 3)
+											+ tempTextureRegion.getWidth() * 2,
+									getCenter(
+											CAMERA_HEIGHT,
+											tempTextureRegion.getHeight() * 2 + 100),
 									tempTextureRegion) {
 								@Override
 								public boolean onAreaTouched(
@@ -1557,18 +1582,21 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
 							us.width = 0.17f;
 							us.height = 0.12f;
-							us.leftMargin = 2* 0.1225f + 0.17f;
+							us.leftMargin = 2 * 0.1225f + 0.17f;
 							us.topMargin = 0.3f;
 							us.SetProperties();
 						}
-						if (i % 6 == 2){
-							tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
-									tempTextureRegion.getWidth() * 3),
-									getCenter(CAMERA_HEIGHT, tempTextureRegion
-											.getHeight() * 2 + 100)
+						if (i % 6 == 2) {
+							tempSprite = new Sprite(
+									getCenter(CAMERA_WIDTH,
+											tempTextureRegion.getWidth() * 3),
+									getCenter(
+											CAMERA_HEIGHT,
+											tempTextureRegion.getHeight() * 2 + 100)
 											+ 100
 											+ tempTextureRegion.getHeight(),
 									tempTextureRegion) {
@@ -1591,18 +1619,21 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
 							us.width = 0.17f;
 							us.height = 0.12f;
-							us.leftMargin = 3*0.1225f + 2*0.17f;
+							us.leftMargin = 3 * 0.1225f + 2 * 0.17f;
 							us.topMargin = 0.3f;
 							us.SetProperties();
 						}
-						if (i % 6 == 4){
-							tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
-									tempTextureRegion.getWidth() * 3),
-									getCenter(CAMERA_HEIGHT, tempTextureRegion
-											.getHeight() * 2 + 100)
+						if (i % 6 == 4) {
+							tempSprite = new Sprite(
+									getCenter(CAMERA_WIDTH,
+											tempTextureRegion.getWidth() * 3),
+									getCenter(
+											CAMERA_HEIGHT,
+											tempTextureRegion.getHeight() * 2 + 100)
 											+ 100
 											+ tempTextureRegion.getHeight(),
 									tempTextureRegion) {
@@ -1625,18 +1656,21 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
 							us.width = 0.17f;
 							us.height = 0.12f;
-							us.leftMargin = 2*0.1225f + 0.17f;
+							us.leftMargin = 2 * 0.1225f + 0.17f;
 							us.topMargin = 0.3f + 0.34f;
 							us.SetProperties();
 						}
-						if (i % 6 == 5){
-							tempSprite = new Sprite(getCenter(CAMERA_WIDTH,
-									tempTextureRegion.getWidth() * 3),
-									getCenter(CAMERA_HEIGHT, tempTextureRegion
-											.getHeight() * 2 + 100)
+						if (i % 6 == 5) {
+							tempSprite = new Sprite(
+									getCenter(CAMERA_WIDTH,
+											tempTextureRegion.getWidth() * 3),
+									getCenter(
+											CAMERA_HEIGHT,
+											tempTextureRegion.getHeight() * 2 + 100)
 											+ 100
 											+ tempTextureRegion.getHeight(),
 									tempTextureRegion) {
@@ -1659,10 +1693,11 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
 							us.width = 0.17f;
 							us.height = 0.12f;
-							us.leftMargin = 3*0.1225f + 2*0.17f;
+							us.leftMargin = 3 * 0.1225f + 2 * 0.17f;
 							us.topMargin = 0.3f + 0.34f;
 							us.SetProperties();
 						}
@@ -1684,8 +1719,8 @@ public class GameActivity extends LayoutGameActivity implements
 										tempTexture);
 
 								tempSprite = new Sprite(5, getCenter(
-										CAMERA_HEIGHT, tempTextureRegion
-												.getHeight()),
+										CAMERA_HEIGHT,
+										tempTextureRegion.getHeight()),
 										tempTextureRegion) {
 									@Override
 									public boolean onAreaTouched(
@@ -1701,11 +1736,12 @@ public class GameActivity extends LayoutGameActivity implements
 										return false;
 									}
 								};
-								us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-								
+								us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+										tempSprite);
+
 								us.width = 0.05f;
 								us.height = 0.14f;
-								us.leftMargin = 0.04f;						
+								us.leftMargin = 0.04f;
 								us.SetProperties();
 								us.SetVerticalAligmentCenter();
 								tempLevel.add(us.sprite);
@@ -1720,12 +1756,13 @@ public class GameActivity extends LayoutGameActivity implements
 									.loadTexture(tempTexture);
 
 							tempSprite = new Sprite(10, 5, tempTextureRegion);
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-							
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
+
 							us.width = 0.4f;
 							us.height = 0.23f;
 							us.leftMargin = 0.05f;
-							us.topMargin = 0.02f;		
+							us.topMargin = 0.02f;
 							us.SetProperties();
 							tempLevel.add(us.sprite);
 
@@ -1754,14 +1791,15 @@ public class GameActivity extends LayoutGameActivity implements
 									return false;
 								}
 							};
-							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT, tempSprite);
-							
+							us = new UISprite(CAMERA_WIDTH, CAMERA_HEIGHT,
+									tempSprite);
+
 							us.width = 0.1f;
 							us.height = 0.15f;
 							us.leftMargin = 0.01f;
-							us.bottomMargin = 0.01f;		
+							us.bottomMargin = 0.01f;
 							us.SetProperties();
-							
+
 							tempLevel.add(us.sprite);
 
 							chooseLevelScreen.add(tempLevel);
@@ -1783,12 +1821,15 @@ public class GameActivity extends LayoutGameActivity implements
 			loadLevel(actualLevelIndex);
 		}
 	}
-	// Load the specified level
+
+	// Load the specified level from xml
+	// store everything in actualWorld. 
+	// nothing should be generated in this function. only get data from xml and store it in the level object
 	private void loadLevel(int index) {
 		textures = new ArrayList<ITexture>();
 		isFinish = false;
-		areas = new LinkedList<Shape>();
-		oEntities = new LinkedList<MixedDataContainer>();
+		//areas = new LinkedList<Shape>();
+		//oEntities = new LinkedList<MixedDataContainer>();
 		actualWorld = new LevelWorld();
 		actualLevelIndex = index;
 		levelEntities = new ArrayList<IEntity>();
@@ -1814,8 +1855,10 @@ public class GameActivity extends LayoutGameActivity implements
 					Document document = db.parse(stream);
 					Element root = document.getDocumentElement();
 
-					actualWorld.frontBackground = root
-							.getAttribute("background-front");
+					if (root.getAttribute("background-front") != null) {
+						actualWorld.frontBackground = root
+								.getAttribute("background-front");
+					}
 
 					actualWorld.backBackground = new ArrayList<String>();
 					NodeList backsNodeList = root
@@ -1846,9 +1889,9 @@ public class GameActivity extends LayoutGameActivity implements
 					NodeList carNodeList = root.getElementsByTagName("car");
 					if (carNodeList.getLength() == 1) {
 						Element carElement = (Element) carNodeList.item(0);
-						this.oCar.x = Integer.parseInt(carElement
+						actualWorld.carX = Integer.parseInt(carElement
 								.getAttribute("x"));
-						this.oCar.y = Integer.parseInt(carElement
+						actualWorld.carY = Integer.parseInt(carElement
 								.getAttribute("y"));
 					}
 
@@ -1864,7 +1907,7 @@ public class GameActivity extends LayoutGameActivity implements
 						height = Float.parseFloat(carElement
 								.getAttribute("height"));
 
-						finish = new Rectangle(x, y, width, height);
+						actualWorld.finish = new Rectangle(x, y, width, height);
 					}
 
 					NodeList deadNodeList = root
@@ -1888,7 +1931,7 @@ public class GameActivity extends LayoutGameActivity implements
 								height = Float.parseFloat(entityElement
 										.getAttribute("height"));
 
-								areas.add(new Rectangle(x, y, width, height));
+								actualWorld.deadAreas.add(new Rectangle(x, y, width, height));
 							}
 						}
 					}
@@ -1917,9 +1960,10 @@ public class GameActivity extends LayoutGameActivity implements
 							entity.sprite = entityElement
 									.getAttribute("sprite");
 							entity.shape = entityElement.getAttribute("shape");
-							entity.visible = Boolean.getBoolean(entityElement
+							entity.visible = Boolean.parseBoolean(entityElement
 									.getAttribute("visible"));
-							oEntities.add(entity);
+							//oEntities.add(entity);
+							actualWorld.entities.add(entity);
 						}
 					}
 
@@ -1989,7 +2033,8 @@ public class GameActivity extends LayoutGameActivity implements
 		generateUpdateHandler();
 	}
 
-	//Here i load the sprites of the actual level after the game is fully loaded
+	// Here i load the sprites of the actual level after the game is fully
+	// loaded
 	private void LoadLevelSprites() {
 		for (IEntity item : levelEntities) {
 			mScene.attachChild(item);
@@ -1999,18 +2044,18 @@ public class GameActivity extends LayoutGameActivity implements
 		levelWorldPhysics.setGravity(new Vector2(0, 15));
 		mScene.sortChildren();
 	}
-	
-	//Here the sensors of finish and dead areas are created
+
+	// Here the sensors of finish and dead areas are created
 	private void generateSensors() {
 		FixtureDef d = new FixtureDef();
 		d.isSensor = true;
-		Body end = PhysicsFactory.createBoxBody(levelWorldPhysics, finish,
+		Body end = PhysicsFactory.createBoxBody(levelWorldPhysics, actualWorld.finish,
 				BodyType.StaticBody, d);
 		end.setUserData("finish");
 
 		ArrayList<Body> deads = new ArrayList<Body>();
 
-		for (Shape area : this.areas) {
+		for (Shape area : this.actualWorld.deadAreas) {
 			Body temp = PhysicsFactory.createBoxBody(levelWorldPhysics, area,
 					BodyType.StaticBody, d);
 			temp.setUserData("dead");
@@ -2033,8 +2078,8 @@ public class GameActivity extends LayoutGameActivity implements
 				+ w.index + "/");
 		BitmapTextureAtlasEx mTextureAtlasEx = new BitmapTextureAtlasEx(4096,
 				2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		for (int i = 0; i < this.oEntities.size(); i++) {
-			MixedDataContainer entity = this.oEntities.get(i);
+		for (int i = 0; i < w.entities.size(); i++) {
+			MixedDataContainer entity = w.entities.get(i);
 			TextureRegion mTextureRegion = mTextureAtlasEx.appendTextureAsset(
 					this, "gfx/" + entity.sprite);
 			worldTextureRegionHashMap.put(entity.sprite, mTextureRegion);
@@ -2044,18 +2089,21 @@ public class GameActivity extends LayoutGameActivity implements
 
 		cameraBound.setBounds(0, w.width, 0, w.height);
 		cameraBound.setBoundsEnabled(true);
-		for (int i = 0; i < this.oEntities.size(); i++) {
-			MixedDataContainer entity = this.oEntities.get(i);
+		for (int i = 0; i < w.entities.size(); i++) {
+			MixedDataContainer entity = w.entities.get(i);
 			TextureRegion textureRegion = this.worldTextureRegionHashMap
 					.get(entity.sprite);
+
 			Sprite sprite = new Sprite(entity.x, entity.y, textureRegion);
 			// Create physics body
 			if (entity.visible == false)
 				sprite.setVisible(false);
+			else
+				sprite.setVisible(true);
 			Body body = this.worldPhysicsEditorShapeLibrary.createBody(
 					entity.shape, sprite, levelWorldPhysics);
 			levelEntities.add(sprite);
-			// this.mScene.attachChild(sprite);
+			//this.mScene.attachChild(sprite);
 			levelWorldPhysics.registerPhysicsConnector(new PhysicsConnector(
 					sprite, body, true, true));
 		}
@@ -2064,38 +2112,39 @@ public class GameActivity extends LayoutGameActivity implements
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("levels/level"
 				+ w.index + "/gfx/");
 
-		BitmapTextureAtlas tempTexture = new BitmapTextureAtlas(2048, 512,
-				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		TextureRegion tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(tempTexture, this, w.frontBackground, 0, 0);
-		mEngine.getTextureManager().loadTexture(tempTexture);
-
-		textures.add(tempTexture);
-
-		levelBackground = new Sprite(0, 0, tempTextureRegion);
-		
-		levelBackground.setScaleCenter(0, 0);	
-		float fx = w.width / levelBackground.getWidth();
-		float fy = w.height / levelBackground.getHeight();
-		levelBackground.setScale(fx, fy);
-		bbackground = new ArrayList<Sprite>();
-		for (String s : w.backBackground) {
-			tempTexture = new BitmapTextureAtlas(2048, 512,
+		if (w.frontBackground != "") {
+			BitmapTextureAtlas tempTexture = new BitmapTextureAtlas(2048, 512,
 					TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-			tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
-					.createFromAsset(tempTexture, this, s, 0, 0);
+			TextureRegion tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(tempTexture, this, w.frontBackground, 0, 0);
 			mEngine.getTextureManager().loadTexture(tempTexture);
 			textures.add(tempTexture);
-			bbackground.add(new Sprite(0, 0, tempTextureRegion));
-		}
-		
-		levelEntities.add(levelBackground);		
 
-		for (Sprite sp : bbackground) {
-			levelEntities.add(sp);
-			
-			sp.setScaleCenter(0, 0);
-			sp.setScale(fx, fy);
+			levelBackground = new Sprite(0, 0, tempTextureRegion);
+
+			levelBackground.setScaleCenter(0, 0);
+			float fx = w.width / levelBackground.getWidth();
+			float fy = w.height / levelBackground.getHeight();
+			levelBackground.setScale(fx, fy);
+			bbackground = new ArrayList<Sprite>();
+			for (String s : w.backBackground) {
+				tempTexture = new BitmapTextureAtlas(2048, 512,
+						TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+				tempTextureRegion = BitmapTextureAtlasTextureRegionFactory
+						.createFromAsset(tempTexture, this, s, 0, 0);
+				mEngine.getTextureManager().loadTexture(tempTexture);
+				textures.add(tempTexture);
+				bbackground.add(new Sprite(0, 0, tempTextureRegion));
+			}
+
+			levelEntities.add(levelBackground);
+
+			for (Sprite sp : bbackground) {
+				levelEntities.add(sp);
+
+				sp.setScaleCenter(0, 0);
+				sp.setScale(fx, fy);
+			}
 		}
 
 		final Shape ground = new Rectangle(0, w.height, w.width * 2, 1);
@@ -2117,8 +2166,11 @@ public class GameActivity extends LayoutGameActivity implements
 		levelEntities.add(right);
 	}
 
-	//The physics structure of the car is created here
+	// The physics structure of the car is created here
 	private void generateLevelCar() {
+		this.oCar.x = this.actualWorld.carX;
+		this.oCar.y = this.actualWorld.carY;
+		
 		// body
 		pCar.mass = 5;
 		pCar.I = 10;
@@ -2141,15 +2193,15 @@ public class GameActivity extends LayoutGameActivity implements
 		pSpring1.upperTranslation = 15.0f;
 		pSpring2.upperTranslation = 15.0f;
 
-		Sprite sprite = new Sprite(0, 0, this.gameTextureRegionHashMap
-				.get("car_body"));
+		Sprite sprite = new Sprite(0, 0,
+				this.gameTextureRegionHashMap.get("car_body"));
 		sprite.setPosition(oCar.x, oCar.y);
 		cartShape = sprite;
 		cartShape.setZIndex(10);
 
 		this.cart = PhysicsFactory.createBoxBody(levelWorldPhysics, cartShape,
 				BodyType.DynamicBody, ONLY_WALL_FIXTURE_DEF);
-		
+
 		MassData md = new MassData();
 		md.I = pCar.I;
 		md.mass = pCar.mass;
@@ -2160,10 +2212,9 @@ public class GameActivity extends LayoutGameActivity implements
 				cartShape, cart, true, true));
 
 		wheel1Face = new Sprite((cart.getWorldCenter()).x
-				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel1.relativeX, cartShape
-				.getY()
-				+ pWheel1.relativeY, this.gameTextureRegionHashMap
-				.get("car_wheel"));
+				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel1.relativeX,
+				cartShape.getY() + pWheel1.relativeY,
+				this.gameTextureRegionHashMap.get("car_wheel"));
 		wheel1Face.setZIndex(11);
 		this.wheel1Body = PhysicsFactory.createCircleBody(levelWorldPhysics,
 				wheel1Face, BodyType.DynamicBody, ONLY_WALL_FIXTURE_DEF);
@@ -2174,10 +2225,9 @@ public class GameActivity extends LayoutGameActivity implements
 		levelEntities.add(wheel1Face);
 
 		wheel2Face = new Sprite((cart.getWorldCenter()).x
-				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel2.relativeX, cartShape
-				.getY()
-				+ pWheel2.relativeY, this.gameTextureRegionHashMap
-				.get("car_wheel"));
+				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel2.relativeX,
+				cartShape.getY() + pWheel2.relativeY,
+				this.gameTextureRegionHashMap.get("car_wheel"));
 		wheel2Face.setZIndex(11);
 		this.wheel2Body = PhysicsFactory.createCircleBody(levelWorldPhysics,
 				wheel2Face, BodyType.DynamicBody, ONLY_WALL_FIXTURE_DEF);
@@ -2187,10 +2237,9 @@ public class GameActivity extends LayoutGameActivity implements
 		levelEntities.add(wheel2Face);
 
 		axle1Face = new Sprite((cart.getWorldCenter()).x
-				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel1.relativeX, cartShape
-				.getY()
-				+ pWheel1.relativeY, this.gameTextureRegionHashMap
-				.get("car_wheel"));
+				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel1.relativeX,
+				cartShape.getY() + pWheel1.relativeY,
+				this.gameTextureRegionHashMap.get("car_wheel"));
 		axle1Face.setScale((float) 0.5);
 		axle1Face.setVisible(false);
 		this.axle1Body = PhysicsFactory.createCircleBody(levelWorldPhysics,
@@ -2199,10 +2248,9 @@ public class GameActivity extends LayoutGameActivity implements
 		levelWorldPhysics.registerPhysicsConnector(new PhysicsConnector(
 				axle1Face, axle1Body, true, true));
 		axle2Face = new Sprite((cart.getWorldCenter()).x
-				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel2.relativeX, cartShape
-				.getY()
-				+ pWheel2.relativeY, this.gameTextureRegionHashMap
-				.get("car_wheel"));
+				* PIXEL_TO_METER_RATIO_DEFAULT + pWheel2.relativeX,
+				cartShape.getY() + pWheel2.relativeY,
+				this.gameTextureRegionHashMap.get("car_wheel"));
 		axle2Face.setVisible(false);
 		axle2Face.setScale((float) 0.5);
 
@@ -2236,14 +2284,17 @@ public class GameActivity extends LayoutGameActivity implements
 		spring1 = new PrismaticJointDef();
 		Float a1 = (float) (-(Math.cos(Math.PI / 3)));
 		Float a2 = (float) ((Math.sin(Math.PI / 3)));
-		spring1.initialize(cart, axle1Body, new Vector2(cart.getWorldCenter().x
-				+ pSpring1.relativeX / PIXEL_TO_METER_RATIO_DEFAULT, cart
-				.getWorldCenter().y), new Vector2(a1, a2));
+		spring1.initialize(
+				cart,
+				axle1Body,
+				new Vector2(cart.getWorldCenter().x + pSpring1.relativeX
+						/ PIXEL_TO_METER_RATIO_DEFAULT, cart.getWorldCenter().y),
+				new Vector2(a1, a2));
 		spring1.lowerTranslation = (float) pSpring1.lowerTranslation
 				/ PIXEL_TO_METER_RATIO_DEFAULT;
 		spring1.upperTranslation = (float) pSpring1.upperTranslation
 				/ PIXEL_TO_METER_RATIO_DEFAULT;
-		
+
 		spring1.enableLimit = true;
 		spring1.enableMotor = true;
 		spring1.motorSpeed = 10;
@@ -2254,10 +2305,13 @@ public class GameActivity extends LayoutGameActivity implements
 		spring2 = new PrismaticJointDef();
 		a1 = (float) ((Math.cos(Math.PI / 3)));
 		a2 = (float) ((Math.sin(Math.PI / 3)));
-		spring2.initialize(cart, axle2Body, new Vector2(cart.getWorldCenter().x
-				+ pSpring2.relativeX / PIXEL_TO_METER_RATIO_DEFAULT, cart
-				.getWorldCenter().y), new Vector2(a1, a2));
-		
+		spring2.initialize(
+				cart,
+				axle2Body,
+				new Vector2(cart.getWorldCenter().x + pSpring2.relativeX
+						/ PIXEL_TO_METER_RATIO_DEFAULT, cart.getWorldCenter().y),
+				new Vector2(a1, a2));
+
 		spring2.lowerTranslation = (float) pSpring2.lowerTranslation
 				/ PIXEL_TO_METER_RATIO_DEFAULT;
 		spring2.upperTranslation = (float) pSpring2.upperTranslation
@@ -2291,45 +2345,44 @@ public class GameActivity extends LayoutGameActivity implements
 		levelWorldPhysics.setGravity(new Vector2(0, 0));
 	}
 
-	//Steps for close a new level
+	// Steps for close a new level
 	private void CloseLevel() {
-		//The accelerometer is disable
+		// The accelerometer is disable
 		disableAccelerometerSensor();
-		//The updaters are unregistered 
+		// The updaters are unregistered
 		mScene.unregisterUpdateHandler(levelWorldPhysics);
 		mEngine.unregisterUpdateHandler(upHand);
 
-		
 		final Display display = getWindowManager().getDefaultDisplay();
 		int CAMERA_WIDTH = display.getWidth();
 		int CAMERA_HEIGHT = display.getHeight();
-		//The camera is reseted
+		// The camera is reseted
 		cameraBound.setChaseEntity(null);
 		cameraBound.updateChaseEntity();
 		cameraBound.reset();
 		cameraBound.setCenter(CAMERA_WIDTH / 2.0f, CAMERA_HEIGHT / 2.0f);
 
-		//The levelStarted flag is set to false
+		// The levelStarted flag is set to false
 		levelStarted = false;
-		//The sound is stoped
+		// The sound is stoped
 		engineSound.stop();
-		//All the level entities are detached from the scene
-		//The textures are unloaded
+		// All the level entities are detached from the scene
+		// The textures are unloaded
 		for (IEntity item : levelEntities) {
 			mEngine.getTextureManager().unloadTexture(
 					(ITexture) item.getUserData());
 			mScene.detachChild(item);
 		}
 
-		//The cart joints are destroyed
+		// The cart joints are destroyed
 		levelWorldPhysics.destroyJoint(mMotor1);
 		levelWorldPhysics.destroyJoint(mMotor2);
 		levelWorldPhysics.destroyJoint(mSpring1);
 		levelWorldPhysics.destroyJoint(mSpring2);
 
 		ArrayList<Body> lista = new ArrayList<Body>();
-		//Now i query for Body in the physics world
-		//and them their are destroyed
+		// Now i query for Body in the physics world
+		// and them their are destroyed
 		Iterator<Body> bodyIterator = levelWorldPhysics.getBodies();
 		while (bodyIterator.hasNext()) {
 			lista.add(bodyIterator.next());
@@ -2338,7 +2391,7 @@ public class GameActivity extends LayoutGameActivity implements
 			levelWorldPhysics.destroyBody(body);
 		}
 
-		//The connectors are also destroyed
+		// The connectors are also destroyed
 		PhysicsConnector[] contents = new PhysicsConnector[levelWorldPhysics
 				.getPhysicsConnectorManager().size()];
 		levelWorldPhysics.getPhysicsConnectorManager().toArray(contents);
@@ -2352,79 +2405,79 @@ public class GameActivity extends LayoutGameActivity implements
 			mEngine.getTextureManager().unloadTexture(t);
 		}
 
-		//The world is reseted
+		// The world is reseted
 		levelWorldPhysics.reset();
 	}
 
 	private void Restart() {
-		//On restart the level is closed
+		// On restart the level is closed
 		CloseLevel();
 		preUpdates = 0;
-		//Loading screen is loaded		
+		// Loading screen is loaded
 		loadScreen(loadingScreen);
 		currentScreenID = LOADING_SCREEN_ID;
-		//The world is loaded in another thread
+		// The world is loaded in another thread
 		Thread thread = new Thread(new LoadLevelThread());
 		thread.start();
 		mScene.sortChildren();
 	}
 
-    @Override
-    protected int getLayoutID() {
-        return R.layout.main;
-    }
+	@Override
+	protected int getLayoutID() {
+		return R.layout.main;
+	}
 
-    @Override
-    protected int getRenderSurfaceViewID() {
-        return R.id.xmllayoutRenderSurfaceView;
-    }
+	@Override
+	protected int getRenderSurfaceViewID() {
+		return R.id.xmllayoutRenderSurfaceView;
+	}
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU && currentScreenID == NOSCREEN) {
-            Log.d("MP", "MENU pressed");
-            try {
-                GamePause();
-            } catch (Exception e) {
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU && currentScreenID == NOSCREEN) {
+			Log.d("MP", "MENU pressed");
+			try {
+				GamePause();
+			} catch (Exception e) {
 
-                e.printStackTrace();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+				e.printStackTrace();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
-    public void GamePause() {
-        isPaused = true;
+	public void GamePause() {
+		isPaused = true;
 
-        pressedLeft = pressedRight = false;
-        engineSound.stop();
+		pressedLeft = pressedRight = false;
+		engineSound.stop();
 
-        mScene.unregisterUpdateHandler(levelWorldPhysics);
-        mEngine.unregisterUpdateHandler(upHand);
+		mScene.unregisterUpdateHandler(levelWorldPhysics);
+		mEngine.unregisterUpdateHandler(upHand);
 
-        sp.ArrangeElements();
-        // Bringing the controls to the center of the camera
-        pauseScreen.get(0).setPosition(
-                    cameraBound.getMinX() + pauseScreen.get(0).getX(),
-                    cameraBound.getMinY() + +pauseScreen.get(0).getY());
+		sp.ArrangeElements();
+		// Bringing the controls to the center of the camera
+		pauseScreen.get(0).setPosition(
+				cameraBound.getMinX() + pauseScreen.get(0).getX(),
+				cameraBound.getMinY() + +pauseScreen.get(0).getY());
 
-        pauseScreen.get(1).setPosition(
-                    cameraBound.getMinX() + pauseScreen.get(1).getX(),
-                    cameraBound.getMinY() + pauseScreen.get(1).getY());
+		pauseScreen.get(1).setPosition(
+				cameraBound.getMinX() + pauseScreen.get(1).getX(),
+				cameraBound.getMinY() + pauseScreen.get(1).getY());
 
-        pauseScreen.get(2).setPosition(
-                    cameraBound.getMinX() + pauseScreen.get(2).getX(),
-                    cameraBound.getMinY() + pauseScreen.get(2).getY());
+		pauseScreen.get(2).setPosition(
+				cameraBound.getMinX() + pauseScreen.get(2).getX(),
+				cameraBound.getMinY() + pauseScreen.get(2).getY());
 
-        // Loading pause Screen
-        loadScreen(pauseScreen);
-        currentScreenID = PAUSE_SCREEN_ID;
-    }
-    
-    @Override
+		// Loading pause Screen
+		loadScreen(pauseScreen);
+		currentScreenID = PAUSE_SCREEN_ID;
+	}
+
+	@Override
 	public void onBackPressed() {
-		   switch (currentScreenID) {
+		switch (currentScreenID) {
 		case OPTION_SCREEN_ID:
 			unloadScreen(optionScreen);
 			loadScreen(mainScreen);
@@ -2436,14 +2489,14 @@ public class GameActivity extends LayoutGameActivity implements
 			loadScreen(mainScreen);
 			currentScreenID = MAIN_SCREEN_ID;
 			break;
-		case ABOUT_SCREEN_ID: 
+		case ABOUT_SCREEN_ID:
 			unloadScreen(aboutScreen);
 			loadScreen(mainScreen);
 			currentScreenID = MAIN_SCREEN_ID;
 			break;
-		//case CHOOSELEVEL_SCREEN_ID:
+		// case CHOOSELEVEL_SCREEN_ID:
 		case PAUSE_SCREEN_ID:
-			unloadScreen(pauseScreen); 
+			unloadScreen(pauseScreen);
 			generateUpdateHandler();
 			isPaused = false;
 			currentScreenID = NOSCREEN;
