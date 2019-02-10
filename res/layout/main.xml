@@ -11,12 +11,15 @@ android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 android:layout_centerInParent="true"
 android:gravity="center" />
+ 
+  <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/control_example" 
+        android:layout_centerInParent="true" 
+        android:visibility="gone"
+        android:background="@null"/>
 
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:textSize="20sp"
-    android:layout_alignBottom="@id/xmllayoutRenderSurfaceView"
-    />
 </RelativeLayout>
 

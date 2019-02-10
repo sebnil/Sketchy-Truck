@@ -6,6 +6,9 @@
 package se.treplex.sketchytruck;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import org.anddev.andengine.entity.shape.Shape;
 
 public class LevelWorld {
 	public String frontBackground;
@@ -13,4 +16,9 @@ public class LevelWorld {
 	public int width;
 	public int height;
 	public int index;
+	public int carX = 0;
+	public int carY = 0;
+	Shape finish;
+	public LinkedList<MixedDataContainer> entities = new LinkedList<MixedDataContainer>();
+	LinkedList<Shape> deadAreas = new LinkedList<Shape>();
 }

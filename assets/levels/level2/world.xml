@@ -1,15 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<world width="4098" height="800" level-caption-image="caption.png" background-front="background.png" gravity="GRAVITY_VENUS" name="myFirst">
-  <car x="100" y="400"/>
-  <entities>    
-	<entity x="0" y="215" shape="mask" sprite="mask.png" visible="false"/>
-  </entities>
-  <deadareas length="2">
-	<deadarea x="0" y="750" height="100" width="2000"></deadarea>
-	<deadarea x="2040" y="750" width="2000" height="100"/>
-  </deadareas>
-  <finish x="4060" y="0" width="100" height="800"></finish>
-  <backgrounds length="0">
-	<background name="background1.png"/>
-  </backgrounds>
+<world width="4098" height="800" level-caption-image="caption.png"
+	gravity="GRAVITY_VENUS" name="myFirst">
+	<car x="100" y="400" />
+	<entities>
+		<entity x="0" y="215" shape="mask_2" sprite="caption.png"
+			visible="true" />
+		<entity x="10" y="700" shape="mask_2" sprite="caption.png"
+			visible="true" />
+	</entities>
+	<deadareas>
+		<deadarea x="0" y="750" height="100" width="2000"></deadarea>
+		<deadarea x="2040" y="750" width="2000" height="100" />
+	</deadareas>
+	<finish x="4060" y="0" width="100" height="800"></finish>
+	<backgrounds length="0">
+		<!-- <background name="background1.png"/> -->
+	</backgrounds>
 </world>
